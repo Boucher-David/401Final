@@ -11,6 +11,9 @@ app.use(require(__dirname + '/routes.js'));
 
 
 
+let http = null;
+let isRunning = null;
+
 module.exports = {
     start: () => {
   
