@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config();
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -18,8 +19,9 @@ module.exports = {
     start: () => {
   
       http = app.listen(process.env.PORT || 3000, () => {
+          console.log(`Server running on PORT: ${process.env.PORT || 3000}`);
           isRunning = true;
-          mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/vault_dev', {useMongoClient: true});   
+          mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/vault_dev',);   
         });
       },
   
