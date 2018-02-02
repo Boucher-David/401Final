@@ -1,6 +1,11 @@
 // I will put all routes, what you need to send, and what to expect back in here.
+testing: localhost:
+
 
 // POST profile/signup
+
+
+
 // POST profile/signin
 // PUT profile/update/email
 // PUT profile/update/password
