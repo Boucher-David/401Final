@@ -5,6 +5,9 @@ const app = module.exports = express.Router();
 const authHeader = require('./lib/authHeader.js');
 const User = require('./schema/User');
 
+const findUser = require('./lib/asyncHelpers');
+
+
 app.use(authHeader);
 
 // Useful for testing signup. Deletes account before route is run.
@@ -17,6 +20,7 @@ app.use(authHeader);
 
 // (emailAddress, code) -> then or catch
 const email = require('./lib/email');
+
 
 app.post('/profile/signup', (req, res, next) => {
 
@@ -100,6 +104,7 @@ app.post('/profile/signin', (req, res, next) => {
 
 });
 
-app.get('*', (req, res, next) => {
-    res.send("Testing Route");
+app.get('/', async (req, res, next) => {
+    let foundUser = await findUser({username: 'username', password: null});
+    res.send(foundUser);
 });

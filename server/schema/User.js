@@ -37,4 +37,5 @@ User.methods.compare = (password, hash) => {
     });
 }
 
+
 module.exports = mongoose.model('User', User);

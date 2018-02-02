@@ -34,6 +34,7 @@ Response: response.body.vault = {
     signin: true or false,
     message: "Account unverified" if they try to sign in without verifying account. No message if,
     user: the user_id string if signin is true. Save this in sync Storage.
+    logins: [] // array of stored logins for that user.
 }
 
 // POST profile/signin
