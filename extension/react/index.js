@@ -1,6 +1,9 @@
 
 import React from 'react';
-import ReactDom from 'react-dom'
+import ReactDom from 'react-dom';
+import {Provider} from 'react-redux';
+import {store} from './app/store';
+import App from './components/app';
 
 
 class Main extends React.Component {
@@ -11,7 +14,11 @@ class Main extends React.Component {
     
     render() {
         return (
-            <div>Testing React App!</div>
+            <Provider store={store}>
+                <div>
+                    <App />
+                </div>
+            </Provider>
         )
     }
     
