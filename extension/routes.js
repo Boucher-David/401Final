@@ -14,7 +14,7 @@ Stringify the above object. Base64 encode. Then send as Basic auth like:
 
 Response: response.body.vault = {
     signup: true or false,
-    message: Username or email taken if unuccessful
+    message: Username or email taken if unsuccessful
 }
 
 // POST profile/signup
