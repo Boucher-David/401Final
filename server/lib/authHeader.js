@@ -23,5 +23,6 @@ module.exports = (req, res, next) => {
         auth['bearer'] = authType[1];
     }
     req.body.vault.auth = auth;
+
     return next();
 };
