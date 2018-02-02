@@ -1,6 +1,21 @@
 // I will put all routes, what you need to send, and what to expect back in here.
-testing: localhost:
 
+// profile/signup
+testing: "localhost:3000/profile/signup"
+
+need: {
+    username: username,
+    password: password,
+    email: email
+}
+
+Stringify the above object. Base64 encode. Then send as Basic auth like:
+"Basic 38439rhfiu"
+
+Response: response.body.vault = {
+    signup: true or false,
+    message: Username or email taken if unuccessful
+}
 
 // POST profile/signup
 

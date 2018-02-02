@@ -1,8 +1,7 @@
-module.exports = (req, next) => {
+module.exports = (req, res, next) => {
     req.body = req.body || {};
     req.body.vault = req.body.vault || {};
     let auth = {
-        basic: [],
         bearer: ''
     };
     let authHeader = req.headers.authorization || false;
@@ -14,11 +13,7 @@ module.exports = (req, next) => {
         let base64 = authType[1];
         let base64Buffer = new Buffer(base64, 'base64');
         let stringHeader = base64Buffer.toString();
-        let authArray = stringHeader.split(':');;
-        if((authArray[0] === '') || (authArray[1] === '')) return  req.body.vault.auth = false;
-        authArray.map(credential => {
-            auth.basic.push(credential)
-        });
+        auth.basic = JSON.parse(stringHeader);
 
     } else {
         if (authType[0] !== 'Bearer') return  req.body.vault.auth = false;
@@ -27,6 +22,6 @@ module.exports = (req, next) => {
         auth.push(authType[1])
         auth['bearer'] = authType[1];
     }
-
-    return req.body.vault.auth = auth;
+    req.body.vault.auth = auth;
+    return next();
 };
