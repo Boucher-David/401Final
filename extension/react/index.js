@@ -11,7 +11,7 @@ class Main extends React.Component {
     
     render() {
         return (
-            <div>Testing React App!</div>
+            <div>Something new</div>
         )
     }
     

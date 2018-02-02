@@ -1,1 +1,1 @@
-console.log("log from content script");
+console.log("Making up a new string");
