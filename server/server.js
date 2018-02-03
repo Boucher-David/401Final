@@ -17,7 +17,6 @@ let isRunning = null;
 
 module.exports = {
     start: () => {    
-
         http = app.listen(process.env.PORT || 3000, () => {
           console.log(`Server running on PORT: ${process.env.PORT || 3000}`);
           isRunning = true;

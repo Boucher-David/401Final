@@ -6,6 +6,7 @@ const authHeader = require('./lib/authHeader.js');
 const User = require('./schema/User');
 const emailVerify = require('./lib/email');
 const userHelper = require('./lib/userHelper');
+const bcrypt = require('bluebird').promisifyAll(require('bcrypt'));
 
 
 app.use((req, res, next) => {
@@ -18,9 +19,24 @@ app.use(authHeader);
 
 //Useful for testing signup. Deletes account before route is run.
 // app.use((req, res, next) => {
+
 //     User.findOneAndRemove({username: 'username'}).then(response => {
-//         console.log(response);
-//         return next();
+//         let newUser = new User({
+//             username: 'username',
+//             password: 'password',
+//             email: 'david_boucher@outlook.com'
+//         });
+
+//         newUser.hashPassword(newUser['password']).then(hash => {
+//             newUser.password = hash.password;
+//             newUser.user_id = hash.user_id;
+//             newUser.verified = false;
+//             newUser.verifyCode = hash.verifyCode;
+//             newUser.save().then(response => {
+//                 res.body.vault.signup = true;
+//                 return next();
+//             });
+//         })
 //     });
 // });
 
@@ -113,7 +129,84 @@ app.post('/profile/signin', async (req, res, next) => {
     }
 });
 
-app.get('/verify/signup/:id', async (req, res, next) => {
+app.post('/profile/update/email', async (req, res, next) => {
+
+    let credentials = req.body.vault.auth.basic || false;
+    if (!credentials) {
+        res.body.vault = {
+            update: false
+        }
+        res.send(res.body.vault);
+        return next();
+    }
+
+    this._findUser = await userHelper.findUser({user_id: credentials.user_id});
+    if (!this._findUser) {
+        res.body.vault = {
+            update: false
+        }
+        res.send(res.body.vault);
+        return next();
+    }
+
+    this._findEmail = await userHelper.findUser({email: credentials.oldEmail});
+    if (!this._findEmail) {
+        res.body.vault = {
+            update: false
+        }
+        res.send(res.body.vault);
+        return next();
+    }
+
+    this._update = await User.findOneAndUpdate({user_id: credentials.user_id},{$set: {email: credentials.newEmail}},{new: true});
+    res.body.vault = {
+        update: true
+    }
+    res.send("Done.")
+    next();
+
+});
+
+app.post('/profile/update/password', async (req, res, next) => {
+
+    let credentials = req.body.vault.auth.basic || false;
+    if (!credentials) {
+        res.body.vault = {
+            update: false
+        }
+        res.send(res.body.vault);
+        return next();
+    }
+
+    this._findUser = await userHelper.findUser({user_id: credentials.user_id});
+    if (!this._findUser) {
+        res.body.vault = {
+            update: false
+        }
+        res.send(res.body.vault);
+        return next();
+    }
+
+    this._verify = await userHelper.compare(credentials.oldPassword, this._findUser.password);
+    if (!this._verify) {
+        res.body.vault = {
+            update: false
+        }
+        res.send(res.body.vault);
+        return next();
+    }
+    
+    let newPassword = await bcrypt.hashAsync(credentials.newPassword, 10);
+    let updatedUser = await User.findOneAndUpdate({user_id: credentials.user_id},{$set: {password: newPassword}},{new: true});
+    res.body.vault = {
+        update: true
+    };
+    res.send("Done");
+    return next();
+});
+
+
+app.get('/verify/:id', async (req, res, next) => {
     let verifyUser = await userHelper.verifyCheck(req.params.id);
     res.body.vault.verified = verifyUser;
     res.send("Done.");

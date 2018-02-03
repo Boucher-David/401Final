@@ -9,18 +9,15 @@ const userHelper = function (req, res, next){
     this.compare = async (password, hash) => {
         return await bcrypt.compare(password, hash);
     };
+
     this.verifyCheck = async (code) => {
         let found = await User.findOne({verifyCode: code});
-        
-
         if (!found) return false;
         if (found.verified) return true;
         let update = User.findOneAndUpdate({verifyCode: code}, {$set:{verified: true}}, {new: true});
+
         return true;
     };
-    this.changeVerifyCode = async () => {
-        return await randomstring.generate({length: 100});
-    }
 
 }
 
