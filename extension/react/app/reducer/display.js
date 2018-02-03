@@ -4,7 +4,8 @@ let defaultState = {
 home: false,
 signup: true,
 verify: false,
-unlock: true
+unlock: false,
+tile: true
 }
 
 export default (state=defaultState, action) => {
