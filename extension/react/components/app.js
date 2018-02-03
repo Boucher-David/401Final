@@ -6,6 +6,7 @@ import Home from './home';
 import Profile from './profile/_profile';
 
 import Verify from './verify';
+import Unlock from './unlock';
 
 
 class App extends React.Component {
@@ -22,6 +23,7 @@ class App extends React.Component {
         {(this.props.display.signup) ? <Signup /> : null}
         {(this.props.display.profile) ? <Profile /> : null}
         {(this.props.display.verify) ? <Verify /> : null}
+        {(this.props.display.unlock) ? <Unlock /> : null}
       </div>
     )
   }
