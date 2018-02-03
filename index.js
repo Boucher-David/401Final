@@ -1,4 +1,9 @@
 'use strict';
 
 require('dotenv').config();
-require('./server/server.js').start();
+
+try {
+    require('./server/server.js').stop();
+} catch (error) {
+    require('./server/server.js').start();
+}

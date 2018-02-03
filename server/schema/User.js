@@ -10,7 +10,7 @@ const User = new mongoose.Schema({
     password: {type: String, required: true},
     user_id: {type: String, unique: true},
     loggedIn: {type: String},
-    verified: {type: Boolean},
+    verified: {type: Boolean, default: false},
     verifyCode: {type: String}
 });
 
