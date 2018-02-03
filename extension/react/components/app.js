@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Signup from './signup';
 import Home from './home';
+import Verify from './verify';
 
 class App extends React.Component {
 

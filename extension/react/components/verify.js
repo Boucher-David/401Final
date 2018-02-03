@@ -8,7 +8,7 @@ class Verify extends React.Component {
     super(props);
   }
 
-  submit = () => {
+  submitForm = () => {
     console.log('You clicked submit');
     //If code is a match redirect to signup component (for signup) or to signin component (for signin). If not, stay on this page and throw error.
 
@@ -22,13 +22,13 @@ class Verify extends React.Component {
   render() {
     return (
       <div>
-        <h2 align="center">Verify Activity</h2>;
+        <h2>Verify Activity</h2>
+        <input id='user-code' type="text" />
         <br />
-        <input type='text' name='verification-code' placeholder='Paste code from email here'>
-        <button onClick={this.submit}>Submit</button>
         <br />
+        <button onClick={this.submitForm}>Submit</button>
         <button onClick={this.resendCode}>Resend Code</button>
-        <h6>Do you need help? Click <a href="">here.</a></h6>
+        <h6>Click <a href=''>here</a> for help.</h6>
       </div>
     )
   }
