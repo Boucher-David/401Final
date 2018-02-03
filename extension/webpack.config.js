@@ -7,6 +7,9 @@ const ExtractPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: './react/index.js',
+    plugins: [
+        new ExtractPlugin('popup.css'),
+    ],
     output: {
         // Webpack prefers an absolute path:
         path: path.resolve(__dirname, './bundle/'),
@@ -30,7 +33,7 @@ module.exports = {
                             loader: 'sass-loader',
                             options: {
                                 sourceMap: true,
-                                includePaths:[`${__dirname}/client/src/style`]
+                                includePaths:[`${__dirname}/bundle/style.scss`]
                             }
                         }
                     ]
