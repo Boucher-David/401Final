@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
+import Signup from './signup/_signup';
 
 class App extends React.Component {
 
@@ -10,7 +11,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>Paste components in here</div>
+      <div>
+        <Signup />
+      </div>
     )
   }
 }
