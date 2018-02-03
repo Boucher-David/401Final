@@ -1,11 +1,12 @@
 module.exports = (req, res, next) => {
     req.body = req.body || {};
     req.body.vault = req.body.vault || {};
+    req.body.vault.auth = false;
     let auth = {
         bearer: ''
     };
     let authHeader = req.headers.authorization || false;
-    if (!authHeader) return  req.body.vault.auth = false;
+    if (!authHeader) return  next();
 
 
     let authType = authHeader.split(' ');

@@ -26,7 +26,9 @@ module.exports = (email, code) => {
 
     return new Promise((resolve, reject) => {
         transporter.sendMail(mailOptions, (error, info) => {
-            if (error) reject(error);
+            if (error) reject({
+                sent: false
+            });
             resolve({
                 sent: true,
                 info: info
