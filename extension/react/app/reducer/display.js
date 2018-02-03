@@ -3,7 +3,8 @@ import signup from "../../components/signup";
 let defaultState = {
 home: false,
 signup: false,
-verify: true
+verify: false,
+unlock: true
 }
 
 export default (state=defaultState, action) => {

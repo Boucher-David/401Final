@@ -7,11 +7,11 @@ import App from './components/app';
 
 
 class Main extends React.Component {
-    
-    constructor(props) { 
+
+    constructor(props) {
         super(props);
     }
-    
+
     render() {
         return (
             <Provider store={store}>
@@ -21,6 +21,6 @@ class Main extends React.Component {
             </Provider>
         )
     }
-    
+
 }
 ReactDom.render(<Main />, document.getElementById('app'));
