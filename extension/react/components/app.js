@@ -1,16 +1,19 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
+import Home from './home';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
   }
-
+  
   render() {
     return (
-      <div>Paste components in here</div>
+      <div>
+        <Home />
+      </div>
     )
   }
 }
