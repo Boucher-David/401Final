@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderIf} from '../../lib/__';
+import {renderIf} from '../lib/__';
 
 class Signup extends React.Component {
 
