@@ -3,7 +3,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Signup from './signup';
 import Home from './home';
+import Profile from './profile/_profile';
+
 import Verify from './verify';
+
 
 class App extends React.Component {
 
@@ -17,6 +20,7 @@ class App extends React.Component {
       <div>
         {(this.props.display.home) ? <Home /> : null}
         {(this.props.display.signup) ? <Signup /> : null}
+        {(this.props.display.profile) ? <Profile /> : null}
         {(this.props.display.verify) ? <Verify /> : null}
       </div>
     )

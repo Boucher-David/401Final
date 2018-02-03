@@ -1,4 +1,4 @@
-import signup from "../../components/signup";
+import signup from "../../components/profile/_profile";
 
 let defaultState = {
 home: false,
