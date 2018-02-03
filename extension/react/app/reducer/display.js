@@ -5,7 +5,8 @@ home: false,
 signup: false,
 verify: false,
 unlock: false,
-profile: true
+profile: true,
+tile: false
 }
 
 export default (state=defaultState, action) => {
