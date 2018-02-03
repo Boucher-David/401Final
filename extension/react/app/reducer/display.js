@@ -2,10 +2,11 @@ import signup from "../../components/profile/_profile";
 
 let defaultState = {
 home: false,
-signup: true,
+signup: false,
 verify: false,
 unlock: false,
-tile: true
+profile: true,
+tile: false
 }
 
 export default (state=defaultState, action) => {
