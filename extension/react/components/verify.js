@@ -16,7 +16,7 @@ class Verify extends React.Component {
 
   resendCode = () => {
     console.log('You clicked resendCode');
-    //Send
+    //Send request to backend for new code to be sent to the users email address.
 }
 
   render() {
