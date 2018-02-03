@@ -14,8 +14,7 @@ const userHelper = function (req, res, next){
         let found = await User.findOne({verifyCode: code});
         if (!found) return false;
         if (found.verified) return true;
-        let update = User.findOneAndUpdate({verifyCode: code}, {$set:{verified: true}}, {new: true});
-
+        let update = await User.findOneAndUpdate({verifyCode: code}, {$set:{verified: true}}, {new: true});
         return true;
     };
 

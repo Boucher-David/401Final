@@ -104,7 +104,7 @@ app.post('/profile/signin', async (req, res, next) => {
     this._checkEmail = await userHelper.findUser({email: credentials['email']});
 
     if (this._checkUsername && this._checkEmail) {
-        if (!this._checkUsername.verify) {
+        if (!this._checkUsername.verified) {
             res.body.vault = {
                 signin: false,
                 message: "User is unverified"
@@ -141,6 +141,7 @@ app.post('/profile/update/email', async (req, res, next) => {
     }
 
     this._findUser = await userHelper.findUser({user_id: credentials.user_id});
+
     if (!this._findUser) {
         res.body.vault = {
             update: false
@@ -159,6 +160,7 @@ app.post('/profile/update/email', async (req, res, next) => {
     }
 
     this._update = await User.findOneAndUpdate({user_id: credentials.user_id},{$set: {email: credentials.newEmail}},{new: true});
+
     res.body.vault = {
         update: true
     }
@@ -188,6 +190,7 @@ app.post('/profile/update/password', async (req, res, next) => {
     }
 
     this._verify = await userHelper.compare(credentials.oldPassword, this._findUser.password);
+    
     if (!this._verify) {
         res.body.vault = {
             update: false
@@ -195,9 +198,9 @@ app.post('/profile/update/password', async (req, res, next) => {
         res.send(res.body.vault);
         return next();
     }
-    
     let newPassword = await bcrypt.hashAsync(credentials.newPassword, 10);
     let updatedUser = await User.findOneAndUpdate({user_id: credentials.user_id},{$set: {password: newPassword}},{new: true});
+
     res.body.vault = {
         update: true
     };
