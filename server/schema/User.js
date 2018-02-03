@@ -10,14 +10,9 @@ const User = new mongoose.Schema({
     password: {type: String, required: true},
     user_id: {type: String, unique: true},
     loggedIn: {type: String},
-    verified: {type: String},
+    verified: {type: Boolean},
     verifyCode: {type: String}
 });
-
-randomstring.generate({
-    length: 12,
-    charset: 'alphabetic'
-  });
 
 
 User.methods.change = (field, newValue) => {
@@ -37,9 +32,10 @@ User.methods.hashPassword = (password) => {
 }
 
 User.methods.compare = (password, hash) => {
-    return bcrypt.compare(password, hash).then ((err, res) => {
+    return bcrypt.compare(password, hash).then ((res) => {
         return res;
     });
 }
+
 
 module.exports = mongoose.model('User', User);
