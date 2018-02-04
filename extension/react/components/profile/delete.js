@@ -23,8 +23,5 @@ class Delete extends React.Component {
   }
 }
 
-// Logout.propTypes = {
-//   router: PropTypes.object.isRequired
-// };
 
 export default Delete;

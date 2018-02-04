@@ -5,26 +5,35 @@ class Email extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      email2: ''
     };
 
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-      // this.props.updateUser(this.state)
-      console.log('__SUBMIT__PASSWORD__')
-   
   }
 
   handleChange = (e) => {
     console.log(e.target.value, 'target')
 
     let {name, value} = e.target;
-
-
     this.setState({[name]:value});
   }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+      // this.props.updateUser(this.state)
+    // if (this.state.email === this.state.email2) 
+    if ((this.state.email || this.state.email2 !== '') && (this.state.email === this.state.email2)) {
+
+      console.log('__SUBMIT_EMAIL__', this.state.email2);
+            
+    } else {
+      return alert('Email must match and field no blank');
+    }
+      
+   
+  }
+
+  
 
   render() {
     return (
@@ -36,7 +45,15 @@ class Email extends React.Component {
             <input 
               type='text'
               name='email'
+              required='true'
               value={this.state.email}
+              onChange={this.handleChange}
+            />
+
+            <input
+              type='text'
+              name='email2'
+              value={this.state.email2}
               onChange={this.handleChange}
             />
                   
@@ -44,6 +61,10 @@ class Email extends React.Component {
           <button type="submit">Save</button>
           
         </form>
+    
+        
+      
+        
       </div>
       
     )
