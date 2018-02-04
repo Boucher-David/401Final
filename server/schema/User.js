@@ -11,7 +11,8 @@ const User = new mongoose.Schema({
     user_id: {type: String, unique: true},
     loggedIn: {type: String},
     verified: {type: Boolean, default: false},
-    verifyCode: {type: String}
+    verifyCode: {type: String},
+    logins: {type: Array}
 });
 
 

@@ -4,8 +4,10 @@ const express = require('express');
 const app = module.exports = express.Router();
 const authHeader = require('./lib/authHeader.js');
 const User = require('./schema/User');
+const Credential = require('./schema/Credential');
 const emailVerify = require('./lib/email');
 const userHelper = require('./lib/userHelper');
+const credentialHelper = require('./lib/credentialHelper');
 const bcrypt = require('bluebird').promisifyAll(require('bcrypt'));
 
 
@@ -76,6 +78,7 @@ app.post('/profile/signup', async (req, res, next) => {
             newUser.verified = false;
             newUser.verifyCode = hash.verifyCode;
             newUser.save().then(response => {
+                let newCredential = new Credential
                 res.body.vault.signup = true;
 
                 emailVerify(newUser.email, newUser.verifyCode).then(response => {
@@ -102,6 +105,8 @@ app.post('/profile/signin', async (req, res, next) => {
 
     this._checkUsername = await userHelper.findUser({username: credentials['username']});
     this._checkEmail = await userHelper.findUser({email: credentials['email']});
+    let _credential = await credentialHelper.findCredential(this._checkUsername.user_id);
+    console.log(_credential.logins);
 
     if (this._checkUsername && this._checkEmail) {
         if (!this._checkUsername.verified) {
@@ -212,8 +217,23 @@ app.post('/profile/update/password', async (req, res, next) => {
 app.get('/verify/:id', async (req, res, next) => {
     let verifyUser = await userHelper.verifyCheck(req.params.id);
     res.body.vault.verified = verifyUser;
-    res.send("Done.");
-    next();
+    let _user = await userHelper.findUser({verifyCode: req.params.id});
+    if (verifyUser) {
+        let _credential = await credentialHelper.findCredential(_user.user_id);
+        if (_credential) {
+            res.send("Done.");
+            return next();
+        } else {
+            let newCredential = new Credential({user_id: _user.user_id, logins: {}});
+            let saved = await newCredential.save();
+            res.send("Done.");
+            return next();
+        }
+    } else {
+        res.send("Done.");
+        return next();
+    }
+
 });
 
 app.get('*', async (req, res, next) => {
