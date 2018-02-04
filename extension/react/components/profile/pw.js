@@ -15,10 +15,15 @@ class PW extends React.Component {
       // this.props.updateUser(this.state)
       console.log('__SUBMIT__PASSWORD__')
     }
-    handleChange(e) {
-      let {name,value} = e.target;
-      this.setState( {[name]: value} );
-  }
+
+    handleChange = (e) => {
+      console.log(e.target.value, 'target')
+  
+      let {name, value} = e.target;
+  
+  
+      this.setState({[name]:value});
+    }
 
   render() {
     return (
@@ -30,7 +35,7 @@ class PW extends React.Component {
             <input 
               type='text'
               name='password'
-              value={this.state.password}
+              value={this.state.password1}
               onChange={this.handleChange}
               
             />
