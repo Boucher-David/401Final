@@ -1,8 +1,8 @@
 const Credential = require('../schema/Credential');
 
 const credentialHelper = function (req, res, next) {
-    this.findCredential = async (user_id) => {
-        return await Credential.findOne({user_id: user_id});
+    this.findCredential = async (credentials) => {
+        return await Credential.findOne({...credentials});
     };
     this.addCredential = async (user_id, credential) => {
         return;
