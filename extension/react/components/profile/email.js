@@ -3,25 +3,28 @@ import React from 'react';
 class Email extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       email: ''
     };
 
-    
-  }
-    handleChange(e) {
-      let {name,value} = e.target;
-      this.setState( {[name]: value} );
   }
 
   handleSubmit(e) {
     e.preventDefault();
       // this.props.updateUser(this.state)
-      console.log('__SUBMIT__EMAIL__');
-    }
-  
+      console.log('__SUBMIT__PASSWORD__')
+   
+  }
 
+  handleChange = (e) => {
+    console.log(e.target.value, 'target')
+
+    let {name, value} = e.target;
+
+
+    this.setState({[name]:value});
+  }
 
   render() {
     return (
@@ -29,13 +32,12 @@ class Email extends React.Component {
         
         <form onSubmit={this.handleSubmit}>
           <label>
-            <span>Update Email</span>
+            <span>Update Password</span>
             <input 
               type='text'
               name='email'
               value={this.state.email}
               onChange={this.handleChange}
-              
             />
                   
           </label>
@@ -47,5 +49,6 @@ class Email extends React.Component {
     )
   }
 }
+
 
 export default Email;
