@@ -197,7 +197,7 @@ app.get('/verify/:id', async (req, res, next) => {
 
     }
     if (verifyUser && _credentials) {
-        res.send("User already exists.");
+        res.send("Done.");
     }
 
 });
