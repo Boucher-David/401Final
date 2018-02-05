@@ -18,7 +18,7 @@ Response: response.body.vault = {
 }
 
 // POST profile/signin
-testing: "localhost:3000/profile/signup"
+testing: "localhost:3000/profile/signin"
 
 
 need: {
@@ -32,7 +32,6 @@ Stringify the above object. Base64 encode. Then send as Basic auth like:
 
 Response: response.body.vault = {
     signin: true or false,
-    message: "Account unverified" if they try to sign in without verifying account. No message if,
     user: the user_id string if signin is true. Save this in sync Storage.
     logins: [] // array of stored logins for that user.
 }
