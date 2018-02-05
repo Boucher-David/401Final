@@ -21,3 +21,10 @@ This will allow you to develop the extention in an actual browser tab. Refreshin
 Bookmark this URL. 
 
 Unfortunately, content scripts and background scripts *cannot* be refreshed in this way. You'll have to keep "chrome://extensions/" up somewhere and refresh it whenever modifying it. 
+
+
+## Background Page
+
+```chrome-extension://abc123/_generated_background_page.html```
+
+Bookmark this badboy too. 
