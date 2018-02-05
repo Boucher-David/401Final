@@ -4,6 +4,8 @@ const authHeader = require('./lib/authHeader.js');
 const User = require('./schema/User');
 const Credential = require('./schema/Credential');
 const emailVerify = require('./lib/email');
+const to = require('./lib/to.js');
+
 const userHelper = require('./lib/userHelper');
 const credentialHelper = require('./lib/credentialHelper');
 const bcrypt = require('bluebird').promisifyAll(require('bcrypt'));
@@ -80,7 +82,7 @@ app.post('/profile/signup', async (req, res, next) => {
             newUser.save().then(response => {
                 let newCredential = new Credential
                 res.body.vault.signup = true;
-
+                console.log('new user: ', newUser);
                 emailVerify(newUser.email, newUser.verifyCode).then(response => {
                     res.body.vault.verifySent = response.sent;
                     res.send(res.body.vault);
@@ -214,47 +216,31 @@ app.post('/profile/update/password', async (req, res, next) => {
 
 
 app.get('/verify/:id', async (req, res, next) => {
+
     let verifyUser = await userHelper.verifyCheck(req.params.id);
-    console.log(verifyUser);
+
     res.body.vault.verified = verifyUser;
+    if (!verifyUser) return res.send("Done");
+
     let _user = await userHelper.findUser({verifyCode: req.params.id});
-    let _credential = await credentialHelper.findCredential({user_id: _user.user_id});
-    console.log('cred: ', typeof _credential);
 
+    let _credentials = await credentialHelper.findCredential({user_id: _user.user_id});
 
-    if (!_credential) {
-        console.log('testing');
+    if (!_credentials) {
 
-        // let newCredential = new Credential({user_id: _user.user_id, logins: {}});
-        // console.log(newCredential);
-        // let saved = await newCredential.save();
-        // console.log('saved: ', saved);
+        let newCredential = new Credential({user_id: _user.user_id, logins: {}});
+
+        let [err, saved] = await to(newCredential.save());
+
+    }
+    if (verifyUser && _credentials) {
+        res.send("User already exists.");
     }
 
-
-    res.send("done");
-    return next();
-
-    // if (verifyUser) {
-    //     let _credential = await credentialHelper.findCredential(_user.user_id);
-    //     console.log(_credential);
-    //     if (_credential) {
-    //         res.send("Done.");
-    //         return next();
-    //     } else {
-    //         let newCredential = new Credential({user_id: _user.user_id, logins: {}});
-    //         let saved = await newCredential.save();
-    //         res.send("Done.");
-    //         return next();
-    //     }
-    // } else {
-    //     res.send("Done.");
-    //     return next();
-    // }
 });
 
 app.post('/credential/set',async (req, res, next) => {
-    console.log(req.body);
+
 
     // check user_id in User db
     let _checkUser = await userHelper.findUser({user_id: req.body.vault.auth.basic.user_id})
