@@ -21,6 +21,9 @@
       "js": ["contentScript.js"]
     }
   ],
+  "web_accessible_resources": [
+        "VaultLogo.png"
+    ],
   "permissions": [
     "activeTab",
     "storage"
