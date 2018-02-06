@@ -1,6 +1,7 @@
 import signup from "../../components/profile/_profile";
 
 let defaultState = {
+
 home: true,
 signup: false,
 verify: false,
@@ -11,5 +12,13 @@ tile: false
 
 export default (state=defaultState, action) => {
     let {type, payload} = action;
-    return state;
+    let newState = {
+        ...state 
+    }
+    Object.keys(newState).forEach(component => {
+        newState[component] = false
+    });
+    newState[payload] = true;
+    
+    return newState;
 }
