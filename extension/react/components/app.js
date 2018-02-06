@@ -14,7 +14,14 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('props: ', props);
+  }
+
+  componentWillMount() {
+    let MK = chrome.runtime.sendMessage({getMK: null}, response => response);
+    let user_id = chrome.storage.sync.get('Vault', response => response);
+
+    if (MK && user_id) this.props.toggle('Tile');
+    if (user_id) this.props.toggle('Unlock');    
   }
 
   render() {
