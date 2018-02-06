@@ -12,5 +12,13 @@ tile: false
 
 export default (state=defaultState, action) => {
     let {type, payload} = action;
-    return state;
+    let newState = {
+        ...state 
+    }
+    Object.keys(newState).forEach(component => {
+        newState[component] = false
+    });
+    newState[payload] = true;
+    
+    return newState;
 }

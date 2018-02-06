@@ -8,12 +8,14 @@ import Tile from './tile';
 import Signin from './signin';
 import Verify from './verify';
 import Unlock from './unlock';
+import { toggle } from '../app/actions/displayActions'
 
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
+
   }
 
   componentWillMount() {
@@ -22,18 +24,19 @@ class App extends React.Component {
 
     if (MK && user_id) this.props.toggle('Tile');
     if (user_id) this.props.toggle('Unlock');    
+
   }
 
   render() {
     return (
       <div>
-        {(this.props.display.home) ? <Home /> : null}
-        {(this.props.display.signup) ? <Signup /> : null}
-        {(this.props.display.signin) ? <Signin /> : null}
-        {(this.props.display.profile) ? <Profile /> : null}
-        {(this.props.display.verify) ? <Verify /> : null}
-        {(this.props.display.unlock) ? <Unlock /> : null}
-        {(this.props.display.tile) ? <Tile /> : null}
+        {(this.props.display.home) ? <Home toggle={this.props.toggle} /> : null}
+        {(this.props.display.signup) ? <Signup toggle={this.props.toggle}/> : null}
+        {(this.props.display.signin) ? <Signin toggle={this.props.toggle}/> : null}
+        {(this.props.display.profile) ? <Profile toggle={this.props.toggle}/> : null}
+        {(this.props.display.verify) ? <Verify toggle={this.props.toggle}/> : null}
+        {(this.props.display.unlock) ? <Unlock toggle={this.props.toggle}/> : null}
+        {(this.props.display.tile) ? <Tile toggle={this.props.toggle}/> : null}
       </div>
     )
   }
@@ -44,7 +47,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, getState) => ({
-
+  toggle: component => dispatch(toggle(component)) 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

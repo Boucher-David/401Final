@@ -18,9 +18,13 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["contentScript.js"]
+      "js": ["contentScript.js"],
+      "css": ["contentScriptStyle.css"]
     }
   ],
+  "web_accessible_resources": [
+        "VaultLogo.png"
+    ],
   "permissions": [
     "activeTab",
     "storage"
