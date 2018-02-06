@@ -8,84 +8,111 @@ class Signup extends React.Component {
     
     this.state = {
       username: '',
-      email: '',
+      email1: '',
+      email2: '',
       password1: '',
       password2: '',
       error: null
     };
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
+    console.log(e.target.value, 'target')
     let {name, value} = e.target;
-    this.getState({
-      [name]: value
-    });
+    this.setState({[name]:value});
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-    let handler = e.target.dataset.handler ==='signup' ? this.props.handleCreate : this.props.handleLogin;
-    handler(this.state)
-    .then()
-    .catch(console.error);
+    if ((this.state.password1 === this.state.password2) && (this.state.email1 === this.state.email2)) {
+    
+        console.log('__CREATE_USER__');
+    }
   }
-
   render() {
 
-    let username = 
-                <label htmlFor='username'>
-                  <span>Username</span>
+    let email1 = 
+                <label htmlFor='email1'>
+                  <span>Email1</span>
                   <input
                     type='text'
-                    name='username'
-                    placeholder='username'
-                    value={this.state.username}
+                    name='email1'
+                    placeholder='email1'
+                    value={this.state.email1}
                     required='true'
                     onChange={this.handleChange}
                    />
                 </label>
 
+    let email2 = 
+                <label htmlFor='email2'>
+                <span>Email2</span>
+                <input 
+                  // id="email"
+                  type="text"
+                  name="email2"
+                  placeholder="email2"
+                  value={this.state.email2}
+                  required="true"
+                  onChange={this.handleChange}
+                  />
+                </label>
+
+
+
     let password1 = 
-                <label htmlFor='password'>
-                  <span>Password</span>
+                <label htmlFor='password1'>
+                  <span>Password1</span>
                   <input 
                     type="password"
-                    name="password"
+                    name="password1"
                     placeholder="password"
-                    value={this.state.password}
+                    value={this.state.password1}
                     required="true"
                     onChange={this.handleChange}
                     />
                 </label>
 
+  let password2 = 
+                <label htmlFor='password2'>
+                <span>Password2</span>
+                <input 
+                  type="password"
+                  name="password2"
+                  placeholder="password"
+                  value={this.state.password2}
+                  required="true"
+                  onChange={this.handleChange}
+                  />
+                </label>
+    
+
+
     return (
       <div>
-        <form>
-          <h3>Existing Users Login</h3>
 
-          {username}
-          {password1}
-
-          <button type='submit'>Login</button>
-        </form>
-
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <h3>New User, Create Account</h3>
-          <label htmlFor='email'>
-            <span>Email Address</span>
+          <label htmlFor='username'>
+            <span>Username</span>
             <input 
-              id="email"
-              type="email"
-              name="email"
-              placeholder="email"
-              value={this.state.email}
+              // id="email"
+              type="text"
+              name="username"
+              placeholder="username"
+              value={this.state.username}
               required="true"
               onChange={this.handleChange}
             />
           </label>
 
-          {username}
+          {email1}
+          {email2}
           {password1}
+          {password2}
+        
+          
+          <br />
 
           <button type="submit">Create Account</button>
 
