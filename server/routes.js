@@ -82,7 +82,6 @@ app.post('/profile/signup', async (req, res, next) => {
             newUser.save().then(response => {
                 let newCredential = new Credential
                 res.body.vault.signup = true;
-                console.log('new user: ', newUser);
                 emailVerify(newUser.email, newUser.verifyCode).then(response => {
                     res.body.vault.verifySent = response.sent;
                     res.send(res.body.vault);
@@ -107,7 +106,6 @@ app.post('/profile/signin', async (req, res, next) => {
     [err, user] = await to(userHelper.findUser({username: credentials['username']}));
     [err, email] = await to(userHelper.findUser({email: credentials['email']}));
     [err, credential] = await to(credentialHelper.findCredential(user.user_id));
-
     if (err) return res.send(res.body.vault);
 
     res.body.vault = {
@@ -116,7 +114,7 @@ app.post('/profile/signin', async (req, res, next) => {
         logins: user.logins
     }
 
-    return res.send("Done");
+    return res.send(res.body.vault);
 
 });
 
@@ -242,7 +240,7 @@ app.post('/credential/set',async (req, res, next) => {
     res.body.vault.logins = user.logins || null;
     res.body.vault.saved = true;
 
-    return res.send("Done");
+    return res.send(res.body.vault);
 
 });
 
@@ -264,6 +262,43 @@ app.get('/credential/get/:cred', async (req, res, next) => {
 
     return res.send(res.body.vault);
 
+});
+
+app.delete('/credential/delete/:cred', async (req, res, next) => {
+    res.body.vault = {
+        deleted: false
+    }
+
+    let [err, user] = await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id})) || [err, user];
+    [err, credential] = await to(credentialHelper.findCredential(user._user_id));
+
+    if (err) return res.send("Done");
+
+    if (!credential.logins[req.params.cred]) return res.send("Done");
+    let newCredentialLoginList = {...credential.logins};
+    delete newCredentialLoginList[req.params.cred];
+
+    let filteredLogins = user.logins.filter(credential => credential !== req.params.cred);
+
+    [err, updatedUser] = await to(User.findOneAndUpdate(
+        {user_id: user.user_id},
+        {$set: {logins: filteredLogins}},
+        {new : true}
+    ));
+
+    [err, updatedCredential] = await to(Credential.findOneAndUpdate(
+        {user_id: credential.user_id},
+        {$set: {logins: newCredentialLoginList}},
+        {new: true}
+    ));
+
+    res.body.vault = {
+        deleted: true,
+        logins: updatedUser.logins
+    }
+
+
+    res.send("Done.");
 });
 
 app.get('*', async (req, res, next) => {
