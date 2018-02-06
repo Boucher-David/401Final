@@ -39,7 +39,9 @@ wrapperDiv.appendChild(wrapperCancel);
 
 }
 
-let credentials = {};
+let credentials = {
+    username: 'username'
+};
 
 jQuery("form").on('submit', (e) => {
     e.preventDefault();
@@ -69,3 +71,18 @@ jQuery("form").on('submit', (e) => {
         createPopup();
     }
 });
+
+
+saveCredentials = () => {
+    // user clicks button to save credentials
+    // get nickname the user wants then call this function
+
+    let _save = {
+        nickname: 'amazon', // grab actual nickname from popup
+        credentials: JSON.stringify(credentials)
+    };
+    chrome.runtime.sendMessage({'saveCredential': _save});
+
+}
+
+saveCredentials();
