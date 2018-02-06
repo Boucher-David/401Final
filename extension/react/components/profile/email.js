@@ -41,7 +41,7 @@ class Email extends React.Component {
         
         <form onSubmit={this.handleSubmit}>
           <label>
-            <span>Update Password</span>
+            <span>Update Email</span>
             <input 
               type='text'
               name='email'
@@ -53,6 +53,7 @@ class Email extends React.Component {
             <input
               type='text'
               name='email2'
+              required='true'
               value={this.state.email2}
               onChange={this.handleChange}
             />
