@@ -1,0 +1,26 @@
+#outerDiv {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid black; 
+    padding: 10px; 
+    z-index: 101;
+    display: inline-block; 
+    position: fixed; 
+    width: 400px; 
+    height: 300px;
+}
+
+h4 {
+    left: 40%;
+}
+
+.credentialInputButton {
+    
+}
+
+
+.hide {
+    display: none;
+}
