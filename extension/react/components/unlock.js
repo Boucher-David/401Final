@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
+import { log } from 'util';
 
 class Unlock extends React.Component {
 
@@ -8,8 +9,15 @@ class Unlock extends React.Component {
     super(props);
   }
 
-  submitForm = () => {
-    console.log('You clicked submit');
+  submitForm = (e) => {
+    e.preventDefault();
+    let userCode = document.getElementById('user-code');
+    if (userCode.value !== '') {
+      console.log('Encrypt Data or Local Storage');
+    } else {
+      alert('Please enter data');
+    }
+    
     //When Master Key is given, encrypt and save it in Local Storage. This will not be kept after browser closes.
 
 }
@@ -35,6 +43,7 @@ class Unlock extends React.Component {
         </form>
       </div>
     )
+    console.log('ID', id);
   }
 }
 
