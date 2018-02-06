@@ -2,7 +2,6 @@
 
 module.exports = (req, res, next) => {
     req.body = req.body || {};
-
     req.body.vault = req.body.vault || {};
     req.body.vault.auth = false;
     let auth = {
@@ -16,8 +15,8 @@ module.exports = (req, res, next) => {
     if (authType[0] === 'Basic') {
         let base64 = authType[1];
         let base64Buffer = new Buffer(base64, 'base64');
-        let stringHeader = base64Buffer.toString();
-        auth.basic = JSON.parse(stringHeader);
+
+        auth.basic = base64Buffer.toString();
 
     } else {
         if (authType[0] !== 'Bearer') return  req.body.vault.auth = false;

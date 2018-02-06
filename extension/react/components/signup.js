@@ -1,23 +1,24 @@
 import React from 'react';
 import {renderIf} from '../lib/__';
 
+import superagent from 'superagent';
+
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
     
     this.state = {
-      username: '',
-      email1: '',
-      email2: '',
-      password1: '',
-      password2: '',
+      username: 'username',
+      email1: 'david_boucher@outlook.com',
+      email2: 'david_boucher@outlook.com',
+      password1: 'password',
+      password2: 'password',
       error: null
     };
   }
 
   handleChange = (e) => {
-    console.log(e.target.value, 'target')
     let {name, value} = e.target;
     this.setState({[name]:value});
   }
@@ -25,9 +26,17 @@ class Signup extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if ((this.state.password1 === this.state.password2) && (this.state.email1 === this.state.email2)) {
-    
-        console.log('__CREATE_USER__');
+      let credentials = {};
+      credentials['email'] = this.state.email1;
+      credentials['password'] = this.state.password1;
+      credentials['username'] = this.state.username;
+      let _string = JSON.stringify(credentials);
+
+      superagent.post('http://localhost:3000/profile/signup').auth(`${_string}`).then(response => {
+        console.log(response);
+      });
     }
+
   }
   render() {
 

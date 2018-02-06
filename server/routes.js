@@ -21,28 +21,14 @@ app.use((req, res, next) => {
 
 app.use(authHeader);
 
-//Useful for testing signup. Deletes account before route is run.
-// app.use((req, res, next) => {
+// testing
+app.use((req, res, next) => {
+    User.findOneAndRemove({username: 'username'}).then(response => {
+        return next();
+    });
+});
 
-//     User.findOneAndRemove({username: 'username'}).then(response => {
-//         let newUser = new User({
-//             username: 'username',
-//             password: 'password',
-//             email: 'david_boucher@outlook.com'
-//         });
 
-//         newUser.hashPassword(newUser['password']).then(hash => {
-//             newUser.password = hash.password;
-//             newUser.user_id = hash.user_id;
-//             newUser.verified = false;
-//             newUser.verifyCode = hash.verifyCode;
-//             newUser.save().then(response => {
-//                 res.body.vault.signup = true;
-//                 return next();
-//             });
-//         })
-//     });
-// });
 
 
 // (emailAddress, code) -> then or catch
@@ -52,6 +38,8 @@ app.post('/profile/signup', async (req, res, next) => {
 
     res.body = res.body || {};
     res.body.vault = res.body.vault || {};
+
+    return res.send(req.body);
 
     let credentials = req.body.vault.auth.basic; 
     // username, email, password

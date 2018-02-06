@@ -46,7 +46,7 @@ createPopup = () => {
 
 }
 
-createPopup();
+// createPopup();
 
 var classname = document.getElementsByClassName("_button");
 console.log(classname);
