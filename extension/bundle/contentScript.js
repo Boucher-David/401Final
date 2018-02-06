@@ -35,7 +35,10 @@
 // }
 
 wrapperDiv = document.createElement("div");
-wrapperDiv.setAttribute("style"," top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid black; padding: 18px; z-index: 101; display: inline-block; position: fixed; width: 200px; height: 100px;");
+wrapperDiv.setAttribute("style"," top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid black; padding: 10px; z-index: 101; display: inline-block; position: fixed; width: 200px; height: 100px;");
+
+wrapperTitle = document.createElement('h4');
+wrapperTitle.innerHTML = "Save Login?";
 
 wrapperInput =
 document.createElement("input");
@@ -48,6 +51,7 @@ wrapperCancel = document.createElement("button");
 wrapperCancel.innerHTML = "No";
 
 document.body.appendChild(wrapperDiv);
+wrapperDiv.appendChild(wrapperTitle);
 wrapperDiv.appendChild(wrapperInput);
 wrapperDiv.appendChild(wrapperSubmit);
 wrapperDiv.appendChild(wrapperCancel);
