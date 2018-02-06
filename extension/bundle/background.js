@@ -1,6 +1,6 @@
-
-
 let MK = false;
+
+// triplesec is loaded as variable triplesec. Come back later to encode.
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     //let vault = chrome.storage.local.get('vault', result =>result);
