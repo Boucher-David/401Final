@@ -4,7 +4,11 @@
   "name": "Vault",
   "description": "Securely store credentials and provide whenever the user needs to log in.",
   "version": "0.0.2",
-
+  "background": {
+    "page": "background.html"
+    //"scripts": ["","background.js"]
+  },
+  "content_security_policy": "script-src 'self' 'sha256-WOdSzz11/3cpqOdrm89LBL2UPwEU9EhbDtMy2OciEhs='",
   "browser_action": {
     "default_icon": "VaultLogoLogout.png",
     "default_popup": "popup.html"
