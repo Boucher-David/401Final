@@ -5,7 +5,7 @@ import Signup from './signup';
 import Home from './home';
 import Profile from './profile/_profile';
 import Tile from './tile';
-
+import Signin from './signin';
 import Verify from './verify';
 import Unlock from './unlock';
 
@@ -22,6 +22,7 @@ class App extends React.Component {
       <div>
         {(this.props.display.home) ? <Home /> : null}
         {(this.props.display.signup) ? <Signup /> : null}
+        {(this.props.display.signin) ? <Signin /> : null}
         {(this.props.display.profile) ? <Profile /> : null}
         {(this.props.display.verify) ? <Verify /> : null}
         {(this.props.display.unlock) ? <Unlock /> : null}
