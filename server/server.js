@@ -3,13 +3,16 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-
+const helmet = require('helmet');
+const cors = require('helmet');
 const app = require('express')();
 
+
+
 app.use(require(__dirname + '/routes.js'));
-
+app.use(cors());
 // add helmet
-
+app.use(helmet());
 
 
 let http = null;
