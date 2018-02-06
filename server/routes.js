@@ -1,15 +1,17 @@
-
-
 const express = require('express');
 const app = module.exports = express.Router();
 const authHeader = require('./lib/authHeader.js');
 const User = require('./schema/User');
 const Credential = require('./schema/Credential');
 const emailVerify = require('./lib/email');
+const to = require('./lib/to.js');
+
 const userHelper = require('./lib/userHelper');
 const credentialHelper = require('./lib/credentialHelper');
 const bcrypt = require('bluebird').promisifyAll(require('bcrypt'));
+var bodyParser = require('body-parser')
 
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
     res.body = res.body || {};
@@ -80,7 +82,6 @@ app.post('/profile/signup', async (req, res, next) => {
             newUser.save().then(response => {
                 let newCredential = new Credential
                 res.body.vault.signup = true;
-
                 emailVerify(newUser.email, newUser.verifyCode).then(response => {
                     res.body.vault.verifySent = response.sent;
                     res.send(res.body.vault);
@@ -102,75 +103,36 @@ app.post('/profile/signin', async (req, res, next) => {
     res.body.vault = res.body.vault || {};
     res.body.vault.signin = false;
 
+    [err, user] = await to(userHelper.findUser({username: credentials['username']}));
+    [err, email] = await to(userHelper.findUser({email: credentials['email']}));
+    [err, credential] = await to(credentialHelper.findCredential(user.user_id));
+    if (err) return res.send(res.body.vault);
 
-    this._checkUsername = await userHelper.findUser({username: credentials['username']});
-    this._checkEmail = await userHelper.findUser({email: credentials['email']});
-    let _credential = await credentialHelper.findCredential(this._checkUsername.user_id);
-    console.log(_credential.logins);
-
-    if (this._checkUsername && this._checkEmail) {
-        if (!this._checkUsername.verified) {
-            res.body.vault = {
-                signin: false,
-                message: "User is unverified"
-            };
-            res.send(res.body.vault);
-            return next();
-        }
-
-        this._checkPassword = await userHelper.compare(credentials['password'], this._checkUsername.password);
-        if (this._checkPassword) {
-            res.body.vault = {
-                signin: true,
-                user_id: this._checkUsername.user_id
-            }
-        }
-
-        res.send(res.body.vault);
-        return next();
-    } else {
-        res.send(res.body.vault);
-        return next();
+    res.body.vault = {
+        signin: true,
+        user: user.user_id,
+        logins: user.logins
     }
+
+    return res.send(res.body.vault);
+
 });
 
 app.post('/profile/update/email', async (req, res, next) => {
+    res.body.vault.update = false;
+    if (!req.body.vault.auth.basic) return res.send("Done");
+    let credentials = req.body.vault.auth.basic;
 
-    let credentials = req.body.vault.auth.basic || false;
-    if (!credentials) {
-        res.body.vault = {
-            update: false
-        }
-        res.send(res.body.vault);
-        return next();
-    }
+    [err, user] = await to(userHelper.findUser({user_id: credentials.user_id}));
+    [err, email] = await to(userHelper.findUser({email: credentials.oldEmail}));
+    [err, update] = await to(User.findOneAndUpdate(
+        {user_id: credentials.user_id},
+        {$set: {email: credentials.newEmail}},
+        {new: true}
+    ));
 
-    this._findUser = await userHelper.findUser({user_id: credentials.user_id});
-
-    if (!this._findUser) {
-        res.body.vault = {
-            update: false
-        }
-        res.send(res.body.vault);
-        return next();
-    }
-
-    this._findEmail = await userHelper.findUser({email: credentials.oldEmail});
-    if (!this._findEmail) {
-        res.body.vault = {
-            update: false
-        }
-        res.send(res.body.vault);
-        return next();
-    }
-
-    this._update = await User.findOneAndUpdate({user_id: credentials.user_id},{$set: {email: credentials.newEmail}},{new: true});
-
-    res.body.vault = {
-        update: true
-    }
-    res.send("Done.")
-    next();
+    if (!err) res.body.vault.update = true;
+    return res.send("Done");
 
 });
 
@@ -215,25 +177,128 @@ app.post('/profile/update/password', async (req, res, next) => {
 
 
 app.get('/verify/:id', async (req, res, next) => {
+
     let verifyUser = await userHelper.verifyCheck(req.params.id);
+
     res.body.vault.verified = verifyUser;
+    if (!verifyUser) return res.send("Done");
+
     let _user = await userHelper.findUser({verifyCode: req.params.id});
-    if (verifyUser) {
-        let _credential = await credentialHelper.findCredential(_user.user_id);
-        if (_credential) {
-            res.send("Done.");
-            return next();
-        } else {
-            let newCredential = new Credential({user_id: _user.user_id, logins: {}});
-            let saved = await newCredential.save();
-            res.send("Done.");
-            return next();
-        }
-    } else {
+
+    let _credentials = await credentialHelper.findCredential({user_id: _user.user_id});
+
+    if (!_credentials) {
+
+        let newCredential = new Credential({user_id: _user.user_id, logins: {}});
+
+        let [err, saved] = await to(newCredential.save());
+
+    }
+    if (verifyUser && _credentials) {
         res.send("Done.");
-        return next();
     }
 
+});
+
+app.post('/credential/set',async (req, res, next) => {
+    res.body.vault.saved = false;
+
+    if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id) return res.send("Done");
+
+    [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
+    if (err) return res.send("Done");
+
+    [err, credential] = await to(credentialHelper.findCredential(user._user_id));
+    if (err) return res.send("Done");
+
+
+    if (credential.logins[req.body.nickname]) return res.send("Done");
+
+    let newCredentialList = credential.logins;
+    newCredentialList[req.body.nickname] = req.body.credential;
+
+    [err, saved] = await to(Credential.findOneAndUpdate(
+        {user_id: req.body.vault.auth.basic.user_id},
+        {$set: {logins: newCredentialList}},
+        {new: true}
+    ));
+
+    
+
+    if (err) return res.send("Done");
+
+
+
+    let savedLogins = Object.keys(saved.logins);
+
+    [err, user] = await to(User.findOneAndUpdate(
+        {user_id: req.body.vault.auth.basic.user_id},
+        {$set: {logins: savedLogins}},
+        {new: true}
+    ));
+
+    res.body.vault.logins = user.logins || null;
+    res.body.vault.saved = true;
+
+    return res.send(res.body.vault);
+
+});
+
+app.get('/credential/get/:cred', async (req, res, next) => {
+    res.body.vault.success = false;
+
+    if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id || !req.params.cred) return res.send("Done");
+
+    [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
+    if (err) return res.send("Done");
+
+    [err, credential] = await to(credentialHelper.findCredential(user._user_id));
+    if (err) return res.send("Done");
+
+    res.body.vault = {
+        success: true,
+        credential: credential.logins[req.params.cred]
+    }
+
+    return res.send(res.body.vault);
+
+});
+
+app.delete('/credential/delete/:cred', async (req, res, next) => {
+    res.body.vault = {
+        deleted: false
+    }
+
+    let [err, user] = await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id})) || [err, user];
+    [err, credential] = await to(credentialHelper.findCredential(user._user_id));
+
+    if (err) return res.send("Done");
+
+    if (!credential.logins[req.params.cred]) return res.send("Done");
+    let newCredentialLoginList = {...credential.logins};
+    delete newCredentialLoginList[req.params.cred];
+
+    let filteredLogins = user.logins.filter(credential => credential !== req.params.cred);
+
+    [err, updatedUser] = await to(User.findOneAndUpdate(
+        {user_id: user.user_id},
+        {$set: {logins: filteredLogins}},
+        {new : true}
+    ));
+
+    [err, updatedCredential] = await to(Credential.findOneAndUpdate(
+        {user_id: credential.user_id},
+        {$set: {logins: newCredentialLoginList}},
+        {new: true}
+    ));
+
+    res.body.vault = {
+        deleted: true,
+        logins: updatedUser.logins
+    }
+
+
+    res.send("Done.");
 });
 
 app.get('*', async (req, res, next) => {

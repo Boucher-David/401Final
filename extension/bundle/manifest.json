@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension allows the user to change the background color of the current page.",
-  "version": "0.0.1",
+  "name": "Vault",
+  "description": "Securely store credentials and provide whenever the user needs to log in.",
+  "version": "0.0.2",
 
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "VaultLogoLogout.png",
     "default_popup": "popup.html"
   },
   "content_scripts": [

@@ -1,5 +1,8 @@
+
+
 module.exports = (req, res, next) => {
     req.body = req.body || {};
+
     req.body.vault = req.body.vault || {};
     req.body.vault.auth = false;
     let auth = {

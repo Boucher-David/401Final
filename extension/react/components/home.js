@@ -18,7 +18,7 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <img src="pwd-icon.jpg" />
+        <img src="VaultLogo.png" />
         <button onClick={this.signup}>Signup</button>
         <button onClick={this.signin}>Signin</button>
       </div>
