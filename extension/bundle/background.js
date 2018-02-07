@@ -5,7 +5,6 @@ let MK = false;
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    //let vault = chrome.storage.local.get('vault', result =>result);
     let message = Object.keys(request);
     switch(message[0]) {
         case 'getMK':
@@ -14,7 +13,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         case 'setMK':
             MK = request[message[0]];
             return;
-
         case 'saveCredential':
             console.log(request['saveCredential']);
             return;

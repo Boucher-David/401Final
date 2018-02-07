@@ -14,21 +14,13 @@ class Main extends React.Component {
         super(props);
     }
 
-    test = (e) => {
-        e.preventDefault();
-        chrome.runtime.sendMessage({saveCredential: {
-            nickname: 'amazon',
-            credential: 'testing'
-        }}, response => {
-            console.log(response);
-        });
-    }
+
 
     render() {
         return (
             <Provider store={store}>
                 <div>
-                    <button onClick={this.test}>Testing</button>
+                    <App />
                 </div>
             </Provider>
         )
