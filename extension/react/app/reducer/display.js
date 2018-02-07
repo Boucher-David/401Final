@@ -2,12 +2,13 @@ import signup from "../../components/profile/_profile";
 
 let defaultState = {
 
-home: true,
+home: false,
 signup: false,
-verify: false,
+verify: true,
 unlock: false,
 profile: false,
-tile: false
+tile: false,
+signin: false
 }
 
 export default (state=defaultState, action) => {

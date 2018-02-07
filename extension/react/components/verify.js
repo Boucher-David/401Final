@@ -17,9 +17,11 @@ class Verify extends React.Component {
 
   submitCode = (event) => {
     event.preventDefault();
-   // if (this.state.code === '') return this.setState({error: true, message: 'Please enter code.'});
-    superagent.get(`http://localhost:3000/verify/abc123`).then(response => {
-      console.log(response);
+
+   if (this.state.code === '') return this.setState({error: true, message: 'Please enter code.'});
+    superagent.get(`http://localhost:3000/verify/${this.state.code}`).then(response => {
+      if (response.body.vault.verified) return this.props.toggle('signin');
+      return this.setState({error: true, message: "Unable to verify. Try again."})
     });
   }
 
