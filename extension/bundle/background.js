@@ -1,6 +1,8 @@
 let MK = false;
 
 // triplesec is loaded as variable triplesec. Come back later to encode.
+// superagent is also loaded. don't send requests within the app, do it here.
+
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     let message = Object.keys(request);
@@ -10,6 +12,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             return;
         case 'setMK':
             MK = request[message[0]];
+            return;
+        case 'saveCredential':
+            console.log(request['saveCredential']);
             return;
         default:
             return;

@@ -1,57 +1,88 @@
 createPopup = () => {
-    outerDiv = document.createElement("div");
-    outerDiv.setAttribute('id','outerDiv');
-    document.body.appendChild(outerDiv);
+    // outerDiv = document.createElement("div");
+    // outerDiv.setAttribute('id','outerDiv');
+    // document.body.appendChild(outerDiv);
 
 
-    let text = `<div>
-        <h4>Save this login?</h4>
-    </div>
-    <div class="credentialInputbutton">
-        <button class="_button" id="_un">Enter Username</button>
-        <button class="_button" id="_pw">Enter Password</button>
-        <button class="_button" id="_em">Enter Email</button>
-    </div>
-    <div class="inputs">
-        <input type="text" placeholder="Username" class="hide _un"></input>
-        <input type="password" placeholder="Password" class="hide _pw"></input>
-        <input type="email" placeholder="Email" class="hide _em"></input>
-    </div>
-    <div class="buttons">
-        <button class="_button" id="save">Save Login</button>
-        <button class="_button" id="dontSave">Don't Save</button>
-    </div>`;
+    // let text = `
+    // <div>
+    // 
+    // </div>`;
 
-    outerDiv.innerHTML = text;
+    // outerDiv.innerHTML = text;
 
+    // LARRY -> you can create html elements normally and wrap them in quotes. then you simple innerHTML those quotes into the DOM. 
+    // LARRY -> write the below stuff above.
+    // LARRY -> Also, I've created contentScriptStyle.css. Move the style into that file if it isn't already in there.
 
-    // wrapperTitle = document.createElement('h4');
-    // wrapperTitle.innerHTML = "Save Login?";
+    wrapperDiv = document.createElement("div");
+wrapperDiv.setAttribute("style"," top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid black; padding: 10px; z-index: 101; display: inline-block; position: fixed; width: 200px; height: 100px;");
 
-    // wrapperInput =
-    // document.createElement("input");
-    // wrapperInput.setAttribute("placeholder", "Enter nickname");
+wrapperTitle = document.createElement('h4');
+wrapperTitle.innerHTML = "Save Login?";
 
-    // wrapperSubmit = document.createElement("button");
-    // wrapperSubmit.innerHTML = "Save";
+wrapperInput =
+document.createElement("input");
+wrapperInput.setAttribute("placeholder", "Enter nickname");
 
-    // wrapperCancel = document.createElement("button");
-    // wrapperCancel.innerHTML = "No";
+wrapperSubmit = document.createElement("button");
+wrapperSubmit.innerHTML = "Save";
 
-    // document.body.appendChild(wrapperDiv);
-    // wrapperDiv.appendChild(wrapperTitle);
-    // wrapperDiv.appendChild(wrapperInput);
-    // wrapperDiv.appendChild(wrapperSubmit);
-    // wrapperDiv.appendChild(wrapperCancel);
+wrapperCancel = document.createElement("button");
+wrapperCancel.innerHTML = "No";
+
+document.body.appendChild(wrapperDiv);
+wrapperDiv.appendChild(wrapperTitle);
+wrapperDiv.appendChild(wrapperInput);
+wrapperDiv.appendChild(wrapperSubmit);
+wrapperDiv.appendChild(wrapperCancel);
 
 }
 
-createPopup();
+let credentials = {
+    username: 'username'
+};
 
-var classname = document.getElementsByClassName("_button");
-console.log(classname);
-Object.keys(classname).forEach(button => {
-    classname[button].addEventListener('click', () => {
-        console.log(this.getAttribute('id'));
-    }, false)
+jQuery("form").on('submit', (e) => {
+    e.preventDefault();
+
+    $("form").each(function() {
+        $(this).find("input").each(function () {
+           let _attr = jQuery(this).attr('name');
+            let _value = jQuery(this)[0].value;
+
+            if (_attr === 'username') credentials['username'] = _value;
+            if (_attr === 'email') credentials['email'] = _value;
+            if (_attr === 'password') credentials['password'] = _value;
+            if (_attr === 'user') credentials['username'] = _value;
+            if (_attr === 'url') credentials['username'] = _value;       
+         })
+      });
+
+    let _before = Object.keys(credentials)
+    
+    Object.keys(credentials).forEach(key => {
+        if (credentials[key] === '') delete credentials[key];
+    });
+
+    let _after = Object.keys(credentials);
+
+    if ((_before.length === _after.length) && (_after.length > 0)) {
+        createPopup();
+    }
 });
+
+
+saveCredentials = () => {
+    // user clicks button to save credentials
+    // get nickname the user wants then call this function
+
+    let _save = {
+        nickname: 'amazon', // grab actual nickname from popup
+        credentials: JSON.stringify(credentials)
+    };
+    chrome.runtime.sendMessage({'saveCredential': _save});
+
+}
+
+saveCredentials();
