@@ -1,11 +1,13 @@
 module.exports = (req, res, next) => {
     req.body = req.body || {};
     req.body.vault = req.body.vault || {};
-    let auth = {
-        bearer: ''
+    req.body.vault = {
+        auth: {
+            basic: false
+        }
     };
     let authHeader = req.headers.authorization || false;
-    if (!authHeader) return  req.body.vault.auth = false;
+    if (!authHeader) return next();
 
 
     let authType = authHeader.split(' ');
@@ -15,18 +17,8 @@ module.exports = (req, res, next) => {
         
         let stringHeader = base64Buffer.toString();
 
-
-
-        auth.basic = JSON.parse(stringHeader);
-
-    } else {
-        if (authType[0] !== 'Bearer') return  req.body.vault.auth = false;
-        if (authType[1] === '') return  req.body.vault.auth = false;
-        if (authType[1] === 'undefined') return  req.body.vault.auth = false;
-        auth.push(authType[1])
-        auth['bearer'] = authType[1];
+        req.body.vault.auth.basic = JSON.parse(stringHeader);
     }
-    req.body.vault.auth = auth;
 
     return next();
 };

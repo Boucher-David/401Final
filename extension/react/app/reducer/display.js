@@ -2,8 +2,8 @@ import signup from "../../components/profile/_profile";
 
 let defaultState = {
 
-home: false,
-signup: true,
+home: true,
+signup: false,
 verify: false,
 unlock: false,
 profile: false,

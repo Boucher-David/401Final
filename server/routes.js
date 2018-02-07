@@ -22,11 +22,11 @@ app.use((req, res, next) => {
 app.use(authHeader);
 
 // remove user to test signup
-app.use((req, res, next) => {
-    User.findOneAndRemove({username: 'username'}).then(response => {
-        return next();
-    });
-});
+// app.use((req, res, next) => {
+//     User.findOneAndRemove({username: 'username'}).then(response => {
+//         return next();
+//     });
+// });
 
 // create user to test signin
 // app.use( async (req, res, next) => {
@@ -44,7 +44,7 @@ app.post('/profile/signup', async (req, res, next) => {
 
     res.body = res.body || {};
     res.body.vault = res.body.vault || {};
-    return res.send(req.body);
+    res.body.vault.veriftSent = false;
 
     let credentials = req.body.vault.auth.basic; 
     // username, email, password
@@ -53,7 +53,7 @@ app.post('/profile/signup', async (req, res, next) => {
         email: credentials.email,
         password: credentials.password
     });
-    return res.send(req.body);
+    return res.send(res.body);
     this._checkUsername = await userHelper.findUser({username: credentials['username']});
     this._checkEmail = await userHelper.findUser({email: credentials['email']});
 
@@ -174,7 +174,7 @@ app.get('/verify/:id', async (req, res, next) => {
     let verifyUser = await userHelper.verifyCheck(req.params.id);
 
     res.body.vault.verified = verifyUser;
-    if (!verifyUser) return res.send("Done");
+    if (!verifyUser) return res.send(res.body);
 
     let _user = await userHelper.findUser({verifyCode: req.params.id});
 
@@ -188,7 +188,7 @@ app.get('/verify/:id', async (req, res, next) => {
 
     }
     if (verifyUser && _credentials) {
-        res.send("Done.");
+        return res.send(res.body);
     }
 
 });
