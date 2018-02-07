@@ -21,12 +21,20 @@ app.use((req, res, next) => {
 
 app.use(authHeader);
 
-// testing
+// remove user to test signup
 app.use((req, res, next) => {
     User.findOneAndRemove({username: 'username'}).then(response => {
         return next();
     });
 });
+
+// create user to test signin
+// app.use( async (req, res, next) => {
+//     let newUser = new User({username: 'username', password: 'password', email: 'david_boucher@outlook.com'})
+
+//     let [err, saved] = await to(newUser.save());
+//     return next();
+// });
 
 
 // (emailAddress, code) -> then or catch
@@ -36,7 +44,6 @@ app.post('/profile/signup', async (req, res, next) => {
 
     res.body = res.body || {};
     res.body.vault = res.body.vault || {};
-
     return res.send(req.body);
 
     let credentials = req.body.vault.auth.basic; 
@@ -46,7 +53,7 @@ app.post('/profile/signup', async (req, res, next) => {
         email: credentials.email,
         password: credentials.password
     });
-
+    return res.send(req.body);
     this._checkUsername = await userHelper.findUser({username: credentials['username']});
     this._checkEmail = await userHelper.findUser({email: credentials['email']});
 
@@ -287,7 +294,7 @@ app.delete('/credential/delete/:cred', async (req, res, next) => {
     res.send("Done.");
 });
 
-app.get('*', async (req, res, next) => {
+app.get('/*', async (req, res, next) => {
     res.send("testing");
     next();
 });

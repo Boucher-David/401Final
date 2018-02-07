@@ -32,7 +32,8 @@ class Signup extends React.Component {
       credentials['username'] = this.state.username;
       let _string = JSON.stringify(credentials);
 
-      superagent.post('http://localhost:3000/profile/signup').auth(`${_string}`).then(response => {
+
+      superagent.post('http://localhost:3000/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
         console.log(response);
       });
     }
