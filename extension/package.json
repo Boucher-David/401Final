@@ -27,6 +27,7 @@
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
+    "react-accordion-dropdown": "^1.0.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",

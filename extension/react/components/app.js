@@ -8,6 +8,7 @@ import Tile from './tile';
 import Signin from './signin';
 import Verify from './verify';
 import Unlock from './unlock';
+import Logins from './logins/_logins';
 import { toggle } from '../app/actions/displayActions'
 
 
@@ -18,14 +19,14 @@ class App extends React.Component {
 
   }
 
-  componentWillMount() {
-    let MK = chrome.runtime.sendMessage({getMK: null}, response => response);
-    let user_id = chrome.storage.sync.get('Vault', response => response);
+  // componentWillMount() {
+  //   let MK = chrome.runtime.sendMessage({getMK: null}, response => response);
+  //   let user_id = chrome.storage.sync.get('Vault', response => response);
 
-    if (MK && user_id) this.props.toggle('Tile');
-    if (user_id) this.props.toggle('Unlock');    
+  //   if (MK && user_id) this.props.toggle('Tile');
+  //   if (user_id) this.props.toggle('Unlock');    
 
-  }
+  // }
 
   render() {
     return (
@@ -37,6 +38,7 @@ class App extends React.Component {
         {(this.props.display.verify) ? <Verify toggle={this.props.toggle}/> : null}
         {(this.props.display.unlock) ? <Unlock toggle={this.props.toggle}/> : null}
         {(this.props.display.tile) ? <Tile toggle={this.props.toggle}/> : null}
+        {(this.props.display.logins) ? <Logins toggle={this.props.toggle}/> : null}
       </div>
     )
   }
