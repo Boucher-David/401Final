@@ -16,6 +16,30 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  _find = () => {
+    let _user_id = false;
+    let _mk = false;
+
+    chrome.storage.sync.get('vault', response => {
+      if (!response.vault) return this.props.toggle('home');
+      if (response.vault.user_id) _user_id = true;
+      chrome.runtime.sendMessage({'getMK': null}, (response) => {
+        _mk = response;
+        console.log(1);
+        if (_mk && _user_id) return this.props.toggle('tile');
+        console.log(2);
+        if (_user_id) return this.props.toggle('unlock');
+        console.log(3);
+        return this.props.toggle('home');
+      })  
+    });
+  }
+
+  componentWillMount() {
+    this._find();
+  }
+
   render() {
 
     return (

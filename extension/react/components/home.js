@@ -8,25 +8,6 @@ class Home extends React.Component {
     super(props);
   }
 
-  _find = () => {
-    let _user_id = false;
-    let _mk = false;
-
-    chrome.storage.sync.get('vault', response => {
-      if (!response.vault) return;
-      if (response.vault.user_id) _user_id = true;
-      chrome.runtime.sendMessage({'getMK': null}, (response) => {
-        _mk = response;
-        if (_mk && _user_id) return this.props.toggle('tile');
-        if (_user_id) return this.props.toggle('unlock');
-      })  
-    });
-  }
-
-  componentDidMount() {
-    this._find();
-  }
-
  signup = () => {
   this.props.toggle('signup');
 }

@@ -1,29 +1,45 @@
 import React from 'react';
+import superagent from 'superagent';
 
 class PW extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      password1: '',
-      password2: ''
+      oldPassword: '',
+      newPassword: '',
+      newPassword1: '',
+      message: ''
     };
 
   }
 
     handleSubmit = (e) => {
       e.preventDefault();
-      if ((this.state.password1 || this.state.password2 !== '') && (this.state.password1 === this.state.password2)) {
-  
-        console.log('__SUBMIT_PASSWORD__');
+
+      if ((this.state.newPasword || this.state.newPassword1 !== '') && (this.state.newPassword === this.state.newPassword1)) {
+        this.setState({message: ''});
+        chrome.storage.sync.get('vault', response => {
+          this.setState({'user_id': response.vault.user_id});
+       
+          let _string = JSON.stringify(this.state);
+    
+          superagent.post('http://localhost:3000/profile/update/password').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
+            if (!res.body.update) return this.setState({'message': 'Failed to update. Check passwords.'})
+            chrome.runtime.sendMessage({'setMK': false}, r => {
+              chrome.storage.sync.remove('vault');
+              this.props.toggle('signin');
+            });
+          });
+    
+        });
               
       } else {
-        return alert('Passwords must match and field cannot be blank');
+        this.setState({message: 'New passwords must match and cannot be blank'});
       }
     }
 
     handleChange = (e) => {
-      console.log(e.target.value, 'target')
   
       let {name, value} = e.target;
   
@@ -42,10 +58,11 @@ class PW extends React.Component {
           <label>
 
             <span>Update Password</span>
-
+            < br/>
             <input 
               type='text'
-              name='password1'
+              name='oldPassword'
+              placeholder='Enter old password'
               required='true'
               value={this.state.password1}
               onChange={this.handleChange}
@@ -54,7 +71,17 @@ class PW extends React.Component {
 
             <input
               type='text'
-              name='password2'
+              name='newPassword'
+              placeholder='Enter new password'
+              require='true'
+              value={this.state.password2}
+              onChange={this.handleChange}
+            />
+
+          <input
+              type='text'
+              name='newPassword1'
+              placeholder='Enter old password again'
               require='true'
               value={this.state.password2}
               onChange={this.handleChange}
@@ -64,6 +91,7 @@ class PW extends React.Component {
           <button type="submit">Save</button>
           
         </form>
+        <p>{this.state.message}</p>
       </div>
       
     )

@@ -95,7 +95,7 @@ app.post('/profile/signin', async (req, res, next) => {
 
     [err, credential] = await to(credentialHelper.findCredential(user.user_id));
     if (err) return res.send(res.body.vault);
-    
+
     res.body.vault = {
         signin: true,
         user: user.user_id,
@@ -120,7 +120,7 @@ app.post('/profile/update/email', async (req, res, next) => {
     ));
 
     if (!err) res.body.vault.update = true;
-    return res.send("Done");
+    return res.send(res.body.vault);
 
 });
 
@@ -158,7 +158,7 @@ app.post('/profile/update/password', async (req, res, next) => {
     res.body.vault = {
         update: true
     };
-    res.send("Done");
+    res.send(res.body.vault);
     return next();
 });
 
