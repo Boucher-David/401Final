@@ -187,7 +187,8 @@ app.get('/verify/:id', async (req, res, next) => {
 });
 
 app.post('/credential/set',async (req, res, next) => {
-    res.body.vault.saved = false;
+    res.body.vault.saved = false;   
+    console.log('test');
 
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id) return res.send("Done");
 
@@ -231,7 +232,7 @@ app.post('/credential/set',async (req, res, next) => {
 
 app.get('/credential/get/:cred', async (req, res, next) => {
     res.body.vault.success = false;
-    console.log(req.body.vault);
+
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id || !req.params.cred) return res.send("Done");
 
     [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
@@ -307,9 +308,6 @@ app.delete('/credential/reset' , async (req, res, next) => {
         {$set: {logins: {}}},
         {new: true}
     ));
-
-    console.log(updatedUser);
-    console.log(updatedCredential);
 
     if (err) return res.send(res.body);
 

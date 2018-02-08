@@ -29,6 +29,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             MK = request[message[0]];
             return;
 
+        case 'saveCredential':
+          verifyEncryptionAndSend(request['saveCredential']);
+          return;
+
         case 'saveLogins':
             saveSync('logins',request['saveLogins']);
             return;
@@ -84,10 +88,6 @@ let verifyEncryptionAndSend = async (obj) => {
   }
 
   // this is how you save captured credentials. 
-//   verifyEncryptionAndSend({
-//     nickname: 'amazon',
-//     credentials: 'string'
-//   });
 
 getCredential = async (cred) => {
   let _id = await pingSync();
