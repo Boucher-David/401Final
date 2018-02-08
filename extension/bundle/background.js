@@ -6,7 +6,7 @@ let MK = false;
 pingSync = async () => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('vault', result => {
-            resolve(result);
+          resolve(result);
         });
     });
 }
@@ -75,6 +75,18 @@ let decryptPassword = (text) => {
     })
   })
 }
+
+let verifyEncryptionAndSend = async (obj) => {
+  let _id = await pingSync();
+    let _object = obj;
+      if(MK && _id.user_id) {
+        let encrypted = await encryptPassword(obj.credential)
+        _object.credential = encrypted;
+        return _object;
+      }
+  }
+
+
 
 // save user_id
 // chrome.runtime.sendMessage({'saveID': '12345'});
