@@ -6,7 +6,7 @@ let MK = false;
 pingSync = () => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('vault', result => {
-            resolve(result);
+          resolve(result);
         });
     });
 }
@@ -51,6 +51,42 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     }
 
 });
+
+let encryptPassword = (_data) => {
+return new Promise((resolve, reject) => {
+  triplesec.encrypt(({
+    key: new triplesec.Buffer(MK),
+    data: new triplesec.Buffer(_data)}), (err, ciphertext) => {
+    if(err) reject('Failed!');
+    resolve(ciphertext.toString('hex'));
+  });
+})
+
+}
+
+let decryptPassword = (text) => {
+  return new Promise((resolve, reject) => {
+    triplesec.decrypt({
+      data: new triplesec.Buffer(text, 'hex'),
+      key: new triplesec.Buffer(MK)
+    }, (err, decryptString) => {
+      if(err) reject('Failed!');
+      resolve(decryptString.toString());
+    })
+  })
+}
+
+let verifyEncryptionAndSend = async (obj) => {
+  let _id = await pingSync();
+    let _object = obj;
+      if(MK && _id.user_id) {
+        let encrypted = await encryptPassword(obj.credential)
+        _object.credential = encrypted;
+        return _object;
+      }
+  }
+
+
 
 // save user_id
 // chrome.runtime.sendMessage({'saveID': '12345'});
