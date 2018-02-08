@@ -1,4 +1,4 @@
-let MK = false;
+let MK = 'testing';
 
 // triplesec is loaded as variable triplesec. Come back later to encode.
 // superagent is also loaded. don't send requests within the app, do it here.
@@ -12,7 +12,6 @@ pingSync = () => {
 }
 
 saveSync = async (k, v) => {
-
     let _vault = await pingSync();
     _vault[k] = v;
     chrome.storage.sync.set({'vault': _vault});
@@ -25,22 +24,17 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         case 'getMK':
             (MK) ? sendResponse(true) : sendResponse(false);
             return;
+            
         case 'setMK':
             MK = request[message[0]];
             return;
-        case 'saveCredential':
-            let _cred = request['saveCredential'];
 
-            // create a function that checks for MK + user_id.
-            // if both are present, encrypt _cred and send to server
-            return;
         case 'saveLogins':
-        saveSync('logins',request['saveLogins']);
-        
+            saveSync('logins',request['saveLogins']);
             return;
 
         case 'saveID':
-        saveSync('user_id', request['saveID']);
+            saveSync('user_id', request['saveID']);
 
             return; 
         default:
@@ -76,12 +70,24 @@ let decryptPassword = (text) => {
 let verifyEncryptionAndSend = async (obj) => {
   let _id = await pingSync();
     let _object = obj;
+
       if(MK && _id.user_id) {
-        let encrypted = await encryptPassword(obj.credential)
-        _object.credential = encrypted;
-        return _object;
+        let encrypted = await encryptPassword(obj.credentials);
+
+        _object.credentials = encrypted;
+        _object.user_id = _id.user_id;
+
+        superagent.post('http://localhost:3000/credential/set').set('Authorization', `Basic ${btoa(JSON.stringify(_object))}`).then(response => {
+             saveSync('logins', response.body.vault.logins);
+        });
       }
   }
+
+  // this is how you save captured credentials. 
+//   verifyEncryptionAndSend({
+//     nickname: 'amazon',
+//     credentials: 'string'
+//   });  
 
 
 
