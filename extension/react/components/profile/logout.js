@@ -3,33 +3,30 @@ import React from 'react';
 
 class Logout extends React.Component {
 
-  
-  componentDidMount(){
-    // auth.deleteToken();
-    // this.props.router.push('/'); //redirect
+  constructor(props) {
+    super(props);
+
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-      // this.props.updateUser(this.state)
-      console.log('__SUBMIT__LOGOUT__')
+      this.props.toggle('home');
+      chrome.storage.sync.remove('vault');
+      chrome.runtime.sendMessage({'setMK': false});
+      
     }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <div>
           <label>
             <h2>Logout...</h2>      
           </label>
-          <button type="submit">Logout</button>
+          <button onClick={this.handleSubmit}>Logout</button>
           
-        </form>
+        </div>
     );
   }
 }
-
-// Logout.propTypes = {
-//   router: PropTypes.object.isRequired
-// };
 
 export default Logout;

@@ -10,23 +10,16 @@ import Delete from './delete';
 class Profile extends React.Component {
 
   constructor(props) {
-    super(props)
-    let start = {
+    super(props);
+    this.state = {
       email: false,
       password: false,
       logout: false,
       delete: false
-      
-    };
-    this.state = {
-      ...start
     };
   }
 
-  componentDidUpdate() {
-    console.log(this.state);
-  }
-
+  
 
   setComponent = (e) => {
     e.preventDefault();
@@ -35,7 +28,7 @@ class Profile extends React.Component {
     });
 
     this.setState({[e.target.id]: true});
-    
+
   }
 
 
@@ -56,8 +49,8 @@ class Profile extends React.Component {
       <div>
       {(this.state.email) ? <Email /> : null}
       {(this.state.password) ? <PW /> : null}
-      {(this.state.logout) ? <Logout /> : null}
-      {(this.state.delete) ? <Delete /> : null}
+      {(this.state.logout) ? <Logout toggle={this.props.toggle}/> : null}
+      {(this.state.delete) ? <Delete toggle={this.props.toggle}/> : null}
       </div>
       
       </div>

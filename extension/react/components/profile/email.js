@@ -1,36 +1,42 @@
 import React from 'react';
 
+import superagent from 'superagent';
+
 class Email extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      email2: ''
+      oldEmail: '',
+      newEmail: '',
+      message: null
     };
 
   }
 
   handleChange = (e) => {
-    console.log(e.target.value, 'target')
 
     let {name, value} = e.target;
-    this.setState({[name]:value});
+    this.setState({[name]:e.target.value});
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-      // this.props.updateUser(this.state)
-    // if (this.state.email === this.state.email2) 
-    if ((this.state.email || this.state.email2 !== '') && (this.state.email === this.state.email2)) {
-
-      console.log('__SUBMIT_EMAIL__', this.state.email2);
-            
-    } else {
-      return alert('Email must match and field no blank');
-    }
-      
+    chrome.storage.sync.get('vault', response => {
+      this.setState({'user_id': response.vault.user_id});
    
+      let _string = JSON.stringify(this.state);
+
+      superagent.post('http://localhost:3000/profile/update/email').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
+        if (!res.body.update) return this.setState({'message': 'Failed to update. Check your old email.'})
+        return this.setState({'message': `Success. Your new email is ${this.state.newEmail}`});
+      });
+
+    });
+  }
+
+  back = (e) => {
+    this.props.toggle('profile');
   }
 
   
@@ -42,29 +48,32 @@ class Email extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label>
             <span>Update Email</span>
+            < br/>
             <input 
               type='text'
-              name='email'
+              name='oldEmail'
               required='true'
+              placeholder='Old Email'
               value={this.state.email}
               onChange={this.handleChange}
             />
 
             <input
               type='text'
-              name='email2'
+              name='newEmail'
               required='true'
+              placeholder='New Email'
               value={this.state.email2}
               onChange={this.handleChange}
             />
                   
           </label>
           <button type="submit">Save</button>
-          
+          <p>{this.state.message}</p>
         </form>
     
         
-      
+      <button onClick={this.back}>Back to profile</button>
         
       </div>
       

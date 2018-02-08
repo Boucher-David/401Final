@@ -6,17 +6,19 @@ class Delete extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-      // this.props.updateUser(this.state)
-      console.log('__SUBMIT__DELETE__')
+      chrome.storage.sync.get('vault', r => {
+        // need to write backend method to delete all credentials.
+      });
+
     }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form >
           <label>
             <h2>Delete</h2>      
           </label>
-          <button type="submit">Delete</button>
+          <button onClick={this.handleSubmit}>Delete</button>
           
         </form>
     );
