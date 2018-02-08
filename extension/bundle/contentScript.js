@@ -20,7 +20,7 @@ createPopup = () => {
 
 }
 
-createPopup();
+// createPopup();
 
 let nptNickname = () => {
   return document.getElementById('nptNickname').value;
