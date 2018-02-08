@@ -27,6 +27,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             return;
         case 'setMK':
             MK = request[message[0]];
+            console.log(MK);
             return;
         case 'saveCredential':
             let _cred = request['saveCredential'];

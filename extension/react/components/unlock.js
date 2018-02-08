@@ -13,9 +13,8 @@ class Unlock extends React.Component {
     e.preventDefault();
     let userCode = document.getElementById('user-code');
     if (userCode.value !== '') {
-      console.log('Encrypt Data or Local Storage');
-    } else {
-      alert('Please enter data');
+      chrome.runtime.sendMessage({'setMK': userCode.value});
+      this.props.toggle('tile');
     }
     
     //When Master Key is given, encrypt and save it in Local Storage. This will not be kept after browser closes.
@@ -24,7 +23,6 @@ class Unlock extends React.Component {
 
   gotoProfile = () => {
     this.props.toggle('profile');
-    //Onclick return to profile page.
 }
 
   render() {

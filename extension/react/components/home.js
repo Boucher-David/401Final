@@ -17,8 +17,8 @@ class Home extends React.Component {
       if (response.vault.user_id) _user_id = true;
       chrome.runtime.sendMessage({'getMK': null}, (response) => {
         _mk = response;
-        if (_mk && _user_id) this.props.toggle('tile');
-        if (_user_id) this.props.toggle('unlock');
+        if (_mk && _user_id) return this.props.toggle('tile');
+        if (_user_id) return this.props.toggle('unlock');
       })  
     });
   }
