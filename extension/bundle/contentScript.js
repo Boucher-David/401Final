@@ -1,43 +1,48 @@
+
 createPopup = () => {
-    // outerDiv = document.createElement("div");
-    // outerDiv.setAttribute('id','outerDiv');
-    // document.body.appendChild(outerDiv);
+  outerDiv = document.createElement("div");
+  outerDiv.setAttribute('id','outerDiv');
+  document.body.appendChild(outerDiv);
 
+    let text = `
+    <div>
+      <h3>Save Login?</h3>
+      <input id='nptNickname' class='nptLSD' placeholder='Enter Nickname' />
+      <button id='btnSave' class='btnLSD'>Save</button>
+      <button id='btnClose' class='btnLSD'>Cancel</button>
+    </div>`;
 
-    // let text = `
-    // <div>
-    // 
-    // </div>`;
+    outerDiv.innerHTML = text;
 
-    // outerDiv.innerHTML = text;
-
-    // LARRY -> you can create html elements normally and wrap them in quotes. then you simple innerHTML those quotes into the DOM. 
+    // LARRY -> you can create html elements normally and wrap them in quotes. then you simple innerHTML those quotes into the DOM.
     // LARRY -> write the below stuff above.
     // LARRY -> Also, I've created contentScriptStyle.css. Move the style into that file if it isn't already in there.
 
-    wrapperDiv = document.createElement("div");
-wrapperDiv.setAttribute("style"," top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid black; padding: 10px; z-index: 101; display: inline-block; position: fixed; width: 200px; height: 100px;");
-
-wrapperTitle = document.createElement('h4');
-wrapperTitle.innerHTML = "Save Login?";
-
-wrapperInput =
-document.createElement("input");
-wrapperInput.setAttribute("placeholder", "Enter nickname");
-
-wrapperSubmit = document.createElement("button");
-wrapperSubmit.innerHTML = "Save";
-
-wrapperCancel = document.createElement("button");
-wrapperCancel.innerHTML = "No";
-
-document.body.appendChild(wrapperDiv);
-wrapperDiv.appendChild(wrapperTitle);
-wrapperDiv.appendChild(wrapperInput);
-wrapperDiv.appendChild(wrapperSubmit);
-wrapperDiv.appendChild(wrapperCancel);
-
 }
+
+createPopup();
+
+let nptNickname = () => {
+  return document.getElementById('nptNickname').value;
+}
+
+let nicknameValue = nptNickname();
+
+let btnSave = () => {
+  console.log('User clicked btnSave to send ', nicknameValue, ' to DOM.');
+  outerDiv.parentNode.removeChild(outerDiv);
+}
+
+let _btnSave = document.getElementById('btnSave');
+_btnSave.addEventListener('click', btnSave);
+
+let btnClose = () => {
+  console.log('User clicked cancel. nicknameValue is currently ', nicknameValue);
+  outerDiv.parentNode.removeChild(outerDiv);
+}
+
+let _btnClose = document.getElementById('btnClose');
+_btnClose.addEventListener('click', btnClose);
 
 let credentials = {
     username: 'username'
@@ -55,12 +60,12 @@ jQuery("form").on('submit', (e) => {
             if (_attr === 'email') credentials['email'] = _value;
             if (_attr === 'password') credentials['password'] = _value;
             if (_attr === 'user') credentials['username'] = _value;
-            if (_attr === 'url') credentials['username'] = _value;       
+            if (_attr === 'url') credentials['username'] = _value;
          })
       });
 
     let _before = Object.keys(credentials)
-    
+
     Object.keys(credentials).forEach(key => {
         if (credentials[key] === '') delete credentials[key];
     });
