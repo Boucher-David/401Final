@@ -60,19 +60,19 @@ app.post('/profile/signup', async (req, res, next) => {
     if (err) return res.send(res.body);
    
     [err, _hash] = await to(newUser.hashPassword(newUser['password']));
-   
+
     newUser.password = _hash.password;
     newUser.user_id = _hash.user_id;
     newUser.verified = false;
     newUser.verifyCode = _hash.verifyCode;
   
     [err, _save] = await to(newUser.save());
-    
+
     if (err) return res.send(res.body);
     
     [err, verify] = await to(emailVerify(newUser.email, newUser.verifyCode));
     if (err) return res.send(res.body);
-    
+
     res.body.vault.signup = true;
     res.send(res.body);
 });
@@ -85,10 +85,17 @@ app.post('/profile/signin', async (req, res, next) => {
     res.body.vault.signin = false;
 
     [err, user] = await to(userHelper.findUser({username: credentials['username']}));
-    [err, email] = await to(userHelper.findUser({email: credentials['email']}));
-    [err, credential] = await to(credentialHelper.findCredential(user.user_id));
     if (err) return res.send(res.body.vault);
 
+    [err, email] = await to(userHelper.findUser({email: credentials['email']}));
+    if (err) return res.send(res.body.vault);
+
+    [err, password] = await to(userHelper.compare(credentials['password'], user.password));
+    if (!password) return res.send(res.body.vault);
+
+    [err, credential] = await to(credentialHelper.findCredential(user.user_id));
+    if (err) return res.send(res.body.vault);
+    
     res.body.vault = {
         signin: true,
         user: user.user_id,

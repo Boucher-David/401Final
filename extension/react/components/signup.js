@@ -34,7 +34,9 @@ class Signup extends React.Component {
 
 
       superagent.post('http://localhost:3000/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
-        console.log(response);
+        console.log(response.body.vault); 
+      if (response.body.vault.signup) return this.props.toggle('verify');
+
       });
     }
 

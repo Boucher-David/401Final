@@ -23,7 +23,7 @@ class Unlock extends React.Component {
 }
 
   gotoProfile = () => {
-    console.log('You clicked gotoProfile');
+    this.props.toggle('profile');
     //Onclick return to profile page.
 }
 
@@ -37,7 +37,6 @@ class Unlock extends React.Component {
           <br />
           <button onClick={this.submitForm}>Submit</button>
           <hr />
-          <h4>Return to Profile</h4>
           <button onClick={this.gotoProfile}>Profile</button>
           <h6>Click <a href=''>here</a> for help.</h6>
         </form>

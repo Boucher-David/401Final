@@ -37,11 +37,11 @@ class Signin extends React.Component {
     if (!response.body.signin) {
         this.setState({error: true, message: 'Login Failed.'})
       } else {
-        chrome.runtime.sendMessage({'saveID': response.body.user});
-        return;
-        // send user_id to backend
-        // send logins to backend
-        // show tile 
+        chrome.runtime.sendMessage({'saveID': response.body.user}, res => {
+          chrome.runtime.sendMessage({'saveLogins': response.body.logins});
+          this.props.toggle('unlock');
+        });
+
       }
     });
   }

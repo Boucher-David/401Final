@@ -6,23 +6,16 @@ let MK = false;
 pingSync = () => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('vault', result => {
-          resolve(result);
+          resolve(result.vault || {});
         });
     });
 }
 
-saveSync = async (value=false) => {
+saveSync = async (k, v) => {
 
     let _vault = await pingSync();
-    let _new = {..._vault};
-    Object.keys(value).forEach(keys => {
-        _new[keys] = value[keys];
-    });
-    _new['vault'] = null;
-    delete _new['vault'];
-    delete _vault['_vault'];
-
-    chrome.storage.sync.set({'vault': _new});
+    _vault[k] = v;
+    chrome.storage.sync.set({'vault': _vault});
 }
 
 
@@ -41,11 +34,15 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             // create a function that checks for MK + user_id.
             // if both are present, encrypt _cred and send to server
             return;
+        case 'saveLogins':
+        saveSync('logins',request['saveLogins']);
+        
+            return;
 
         case 'saveID':
-            let _ = await saveSync({'user_id': request[message]});
-            _ = await pingSync();
+        saveSync('user_id', request['saveID']);
 
+            return; 
         default:
             return;
     }

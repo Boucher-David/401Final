@@ -13,12 +13,12 @@ class Home extends React.Component {
     let _mk = false;
 
     chrome.storage.sync.get('vault', response => {
+      if (!response.vault) return;
       if (response.vault.user_id) _user_id = true;
       chrome.runtime.sendMessage({'getMK': null}, (response) => {
         _mk = response;
-
         if (_mk && _user_id) this.props.toggle('tile');
-        if (user_id) this.props.toggle('unlock');
+        if (_user_id) this.props.toggle('unlock');
       })  
     });
   }
