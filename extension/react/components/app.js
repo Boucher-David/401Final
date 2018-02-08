@@ -26,11 +26,11 @@ class App extends React.Component {
       if (response.vault.user_id) _user_id = true;
       chrome.runtime.sendMessage({'getMK': null}, (response) => {
         _mk = response;
-        console.log(1);
+  
         if (_mk && _user_id) return this.props.toggle('tile');
-        console.log(2);
+
         if (_user_id) return this.props.toggle('unlock');
-        console.log(3);
+
         return this.props.toggle('home');
       })  
     });

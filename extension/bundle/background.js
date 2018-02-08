@@ -55,7 +55,7 @@ return new Promise((resolve, reject) => {
 
 }
 
-let decryptPassword = (text) => {
+let decryptPassword = async (text) => {
   return new Promise((resolve, reject) => {
     triplesec.decrypt({
       data: new triplesec.Buffer(text, 'hex'),
@@ -87,7 +87,38 @@ let verifyEncryptionAndSend = async (obj) => {
 //   verifyEncryptionAndSend({
 //     nickname: 'amazon',
 //     credentials: 'string'
-//   });  
+//   });
+
+getCredential = async (cred) => {
+  let _id = await pingSync();
+  let _obj = {};
+  
+  _obj.user_id = _id.user_id;
+  superagent.get(`http://localhost:3000/credential/get/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
+    if (response.body.vault.success) {
+      decryptPassword(response.body.vault.credential).then(r => {
+        console.log(r);
+      });
+    } else {
+      console.log(response.body.vault);
+    }
+  });
+}
+
+deleteCredential = async (cred) => {
+  let _id = await pingSync();
+  let _obj = {};
+  
+  _obj.user_id = _id.user_id;
+
+  superagent.delete(`http://localhost:3000/credential/delete/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
+  if (response.body.vault.deleted) {
+      saveSync('logins', response.body.vault.logins);
+    }
+  })
+}
+
+
 
 
 
