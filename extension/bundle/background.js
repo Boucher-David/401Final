@@ -3,7 +3,7 @@ let MK = false;
 // triplesec is loaded as variable triplesec. Come back later to encode.
 // superagent is also loaded. don't send requests within the app, do it here.
 
-pingSync = async () => {
+pingSync = () => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('vault', result => {
             resolve(result);
@@ -41,11 +41,11 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             // create a function that checks for MK + user_id.
             // if both are present, encrypt _cred and send to server
             return;
+
         case 'saveID':
             let _ = await saveSync({'user_id': request[message]});
             _ = await pingSync();
-            console.log(_);
-            return;
+
         default:
             return;
     }

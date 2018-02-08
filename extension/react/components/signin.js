@@ -1,6 +1,7 @@
 import React from 'react';
 import {renderIf} from '../lib/__';
 import { log } from 'util';
+import superagent from 'superagent';
 
 class Signin extends React.Component {
 
@@ -8,15 +9,15 @@ class Signin extends React.Component {
     super(props);
     
     this.state = {
-      username: '',
-      email: '',
-      password1: '',
-      error: null
+      username: 'username',
+      email: 'david_boucher@outlook.com',
+      password: 'password',
+      error: null,
+      message: ''
     };
   }
 
   handleChange = (e) => {
-    // console.log(e.target.value, 'target')
 
     let {name, value} = e.target;
     this.setState({[name]:value});
@@ -24,7 +25,25 @@ class Signin extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('__SIGNIN__');
+
+    let credentials = {};
+    credentials['email'] = this.state.email;
+    credentials['password'] = this.state.password;
+    credentials['username'] = this.state.username;
+    let _string = JSON.stringify(credentials);
+
+    superagent.post('http://localhost:3000/profile/signin').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
+
+    if (!response.body.signin) {
+        this.setState({error: true, message: 'Login Failed.'})
+      } else {
+        chrome.runtime.sendMessage({'saveID': response.body.user});
+        return;
+        // send user_id to backend
+        // send logins to backend
+        // show tile 
+      }
+    });
   }
 
   render() {
@@ -42,12 +61,12 @@ class Signin extends React.Component {
                    />
                 </label>
 
-    let password1 = 
-                <label htmlFor='password1'>
+    let password = 
+                <label htmlFor='password'>
                   <span>Password</span>
                   <input 
                     type="password"
-                    name="password1"
+                    name="password"
                     placeholder="password"
                     value={this.state.password}
                     required="true"
@@ -55,6 +74,17 @@ class Signin extends React.Component {
                     />
                 </label>
 
+    let email = <label htmlFor='email'>
+    <span>Email</span>
+    <input
+      type="email"
+      name="email"
+      placeholder="email"
+      value={this.state.email}
+      required="true"
+      onChange={this.handleChange}
+      />
+  </label>
     
 
     return (
@@ -63,7 +93,8 @@ class Signin extends React.Component {
           <h3>Existing Users Login</h3>
 
           {username}
-          {password1}
+          {password}
+          {email}
 
           <button type='submit'>Login</button>
         </form>
