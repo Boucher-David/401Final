@@ -192,16 +192,17 @@ app.post('/credential/set',async (req, res, next) => {
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id) return res.send("Done");
 
     [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
-    if (err) return res.send("Done");
+    if (err) return res.send(res.body);
 
     [err, credential] = await to(credentialHelper.findCredential(user._user_id));
-    if (err) return res.send("Done");
 
-
-    if (credential.logins[req.body.nickname]) return res.send("Done");
+    if (err) return res.send(res.body);
 
     let newCredentialList = credential.logins;
-    newCredentialList[req.body.nickname] = req.body.credential;
+    //console.log(newCredentialList);
+    newCredentialList[req.body.vault.auth.basic.nickname] = req.body.vault.auth.basic.credentials;
+
+
 
     [err, saved] = await to(Credential.findOneAndUpdate(
         {user_id: req.body.vault.auth.basic.user_id},
@@ -210,12 +211,10 @@ app.post('/credential/set',async (req, res, next) => {
     ));
 
     
-
-    if (err) return res.send("Done");
-
-
+    if (err) return res.send(res.body);
 
     let savedLogins = Object.keys(saved.logins);
+
 
     [err, user] = await to(User.findOneAndUpdate(
         {user_id: req.body.vault.auth.basic.user_id},
@@ -226,13 +225,13 @@ app.post('/credential/set',async (req, res, next) => {
     res.body.vault.logins = user.logins || null;
     res.body.vault.saved = true;
 
-    return res.send(res.body.vault);
+    return res.send(res.body);
 
 });
 
 app.get('/credential/get/:cred', async (req, res, next) => {
     res.body.vault.success = false;
-
+    console.log(req.body.vault);
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id || !req.params.cred) return res.send("Done");
 
     [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
