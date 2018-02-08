@@ -26,31 +26,55 @@ saveSync = async (value=false) => {
 }
 
 
-chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-    let message = Object.keys(request);
-    switch(message[0]) {
-        case 'getMK':
-            (MK) ? sendResponse(true) : sendResponse(false);
-            return;
-        case 'setMK':
-            MK = request[message[0]];
-            return;
-        case 'saveCredential':
-            let _cred = request['saveCredential'];
+// chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+//     let message = Object.keys(request);
+//     switch(message[0]) {
+//         case 'getMK':
+//             (MK) ? sendResponse(true) : sendResponse(false);
+//             return;
+//         case 'setMK':
+//             MK = request[message[0]];
+//             return;
+//         case 'saveCredential':
+//             let _cred = request['saveCredential'];
+//
+//             // create a function that checks for MK + user_id.
+//             // if both are present, encrypt _cred and send to server
+//             return;
+//         case 'saveID':
+//             let _ = await saveSync({'user_id': request[message]});
+//             _ = await pingSync();
+//             console.log(_);
+//             return;
+//         default:
+//             return;
+//     }
+//
+// });
 
-            // create a function that checks for MK + user_id.
-            // if both are present, encrypt _cred and send to server
-            return;
-        case 'saveID':
-            let _ = await saveSync({'user_id': request[message]});
-            _ = await pingSync();
-            console.log(_);
-            return;
-        default:
-            return;
-    }
+let encryptPassword = (_data) => {
+return new Promise((resolve, reject) => {
+  triplesec.encrypt(({
+    key: new triplesec.Buffer(MK),
+    data: new triplesec.Buffer(_data)}), (err, ciphertext) => {
+    if(err) reject('Failed!');
+    resolve(ciphertext.toString('hex'));
+  });
+})
 
-});
+}
+
+let decryptPassword = (text) => {
+  return new Promise((resolve, reject) => {
+    triplesec.decrypt({
+      data: new triplesec.Buffer(text, 'hex'),
+      key: new triplesec.Buffer(MK)
+    }, (err, decryptString) => {
+      if(err) reject('Failed!');
+      resolve(decryptString.toString());
+    })
+  })
+}
 
 // save user_id
 // chrome.runtime.sendMessage({'saveID': '12345'});
