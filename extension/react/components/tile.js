@@ -10,7 +10,6 @@ class Tile extends React.Component {
 
 gotoLogin = () => {
   console.log('You clicked gotoLogin');
-
 }
 
 gotoPWGenerator = () => {

@@ -3,7 +3,7 @@ let MK = false;
 // triplesec is loaded as variable triplesec. Come back later to encode.
 // superagent is also loaded. don't send requests within the app, do it here.
 
-pingSync = async () => {
+pingSync = () => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('vault', result => {
           resolve(result);
@@ -26,31 +26,31 @@ saveSync = async (value=false) => {
 }
 
 
-// chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-//     let message = Object.keys(request);
-//     switch(message[0]) {
-//         case 'getMK':
-//             (MK) ? sendResponse(true) : sendResponse(false);
-//             return;
-//         case 'setMK':
-//             MK = request[message[0]];
-//             return;
-//         case 'saveCredential':
-//             let _cred = request['saveCredential'];
-//
-//             // create a function that checks for MK + user_id.
-//             // if both are present, encrypt _cred and send to server
-//             return;
-//         case 'saveID':
-//             let _ = await saveSync({'user_id': request[message]});
-//             _ = await pingSync();
-//             console.log(_);
-//             return;
-//         default:
-//             return;
-//     }
-//
-// });
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+    let message = Object.keys(request);
+    switch(message[0]) {
+        case 'getMK':
+            (MK) ? sendResponse(true) : sendResponse(false);
+            return;
+        case 'setMK':
+            MK = request[message[0]];
+            return;
+        case 'saveCredential':
+            let _cred = request['saveCredential'];
+
+            // create a function that checks for MK + user_id.
+            // if both are present, encrypt _cred and send to server
+            return;
+
+        case 'saveID':
+            let _ = await saveSync({'user_id': request[message]});
+            _ = await pingSync();
+
+        default:
+            return;
+    }
+
+});
 
 let encryptPassword = (_data) => {
 return new Promise((resolve, reject) => {
