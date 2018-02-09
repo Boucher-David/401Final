@@ -1,5 +1,4 @@
 import React from 'react';
-// import auth from '../utils/auth';
 
 class Delete extends React.Component {
 
@@ -16,10 +15,10 @@ class Delete extends React.Component {
     return (
       <form >
           <label>
-            <h2>Delete</h2>
+            <h2>Delete</h2>      
           </label>
           <button className="btnVault" onClick={this.handleSubmit}>Delete</button>
-
+          
         </form>
     );
   }
