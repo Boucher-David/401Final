@@ -37,6 +37,11 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             sendResponse(MK);
             return;
 
+          case 'deleteCredential':
+            let d = await deleteCredential(request.deleteCredential);
+            sendResponse('hello');
+            return;
+
         case 'saveLogins':
             saveSync('logins',request['saveLogins']);
             return;
@@ -88,6 +93,7 @@ deleteCredential = async (cred) => {
 
   superagent.delete(`http://localhost:3000/credential/delete/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
   if (response.body.vault.deleted) {
+    console.log(response.body.vault);
       saveSync('logins', response.body.vault.logins);
     }
   })

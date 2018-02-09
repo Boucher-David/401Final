@@ -191,15 +191,15 @@ app.get('/verify/:id', async (req, res, next) => {
 
 app.post('/credential/set',async (req, res, next) => {
     res.body.vault.saved = false;   
-    console.log(req.body.vault.auth);
+    
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id) return res.send("Done");
 
     [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
-    console.log(err);
+  
     if (err) return res.send(res.body);
 
     [err, credential] = await to(credentialHelper.findCredential(user._user_id));
-    console.log(err);
+   
     if (err) return res.send(res.body);
 
     let newCredentialList = credential.logins;
@@ -215,7 +215,7 @@ app.post('/credential/set',async (req, res, next) => {
         {new: true}
     ));
 
-    console.log(err);
+
     if (err) return res.send(res.body);
 
     let savedLogins = Object.keys(saved.logins);
@@ -226,7 +226,7 @@ app.post('/credential/set',async (req, res, next) => {
         {$set: {logins: savedLogins}},
         {new: true}
     ));
-    console.log(err);
+
 
     res.body.vault.logins = user.logins || null;
     res.body.vault.saved = true;

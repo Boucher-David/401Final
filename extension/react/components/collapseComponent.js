@@ -4,7 +4,7 @@ import Collapsible from 'react-collapsible';
 class CollapseComponent extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
+        console.log('login: ',this.props);
     }
 
     _fetch = () => {
@@ -12,26 +12,31 @@ class CollapseComponent extends React.Component {
     }
 
     generateKey = (d='123') => {
-        return `${d}_${new Date().getTime()}`;
+        return `${d}_${Math.floor(Math.random() * 25000) + 1}`;
+    }
+
+    deleteCred = (login) => {
+        this.props.delete(login);
     }
 
     render() {
         return (
-            <div onClick={this._fetch}>
-            <Collapsible onClick={this._fetch} key={this.generateKey} trigger={this.props.trigger} >
-                {Object.keys(this.props.login).map((cred, i) => {
 
-                    return <div key={this.generateKey}>
-                        <p>{this.props.login}</p>
+            <Collapsible onClick={this._fetch} key={this.generateKey('collapsable')} trigger={this.props.trigger} >
+            
+
+                {Object.keys(this.props.login[this.props.trigger]).map((cred, i) => {
+                    return <div key={this.generateKey('div')}>
+
                         <input 
-                            type={cred === 'password' ? 'password' : null}
-                            value={this.props.login[cred]}
+                            type={this.props.login[cred] === 'password' ? 'password' : null}
+                            value={this.props.login[cred][i]}
                             name={cred}
                         />
                     </div>
                 })}
+                <div onClick={() => this.deleteCred(this.props.trigger)}>Delete Credential</div>
             </Collapsible>
-            </div>
         )
     }
 }

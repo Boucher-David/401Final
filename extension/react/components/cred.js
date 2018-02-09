@@ -34,9 +34,9 @@ class Logins extends React.Component {
     getCredential = (cred) => {
         let _obj = {};
         _obj.user_id = this.state.user_id;
+
         return new Promise((resolve, reject) => {
             superagent.get(`http://localhost:3000/credential/get/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
-
             if (response.body.vault.success) {
                 resolve(response.body.vault.credential);
               }
@@ -44,10 +44,11 @@ class Logins extends React.Component {
           })
     }
 
-    componentWillMount() {
+    fill = () => {
         chrome.storage.sync.get('vault', r => {
             
             this.setState({user_id: r.vault.user_id});
+            if (r.vault.logins.length === 0) return;
 
             if (r.vault.logins) this.setState({logins: r.vault.logins});
 
@@ -58,29 +59,27 @@ class Logins extends React.Component {
             });
 
             this.setState(_state);
+
+            this.state.logins.map(login => {
+
+                this.getCredential(login);
+            });
         });
     }
 
-    fetchCred = (login) => {
+    componentWillMount() {
+        this.fill();
+    }
 
-        if (Object.keys(login.login).length === 0) return;
-        chrome.runtime.sendMessage({'getCredential': login.trigger}, rrr => {
-            this.getCredential(login.trigger).then(fff => {
+    deleteCred = (cred) => {
 
-                this.decryptPassword(fff, rrr).then(x => {
-                    let _y = this.state;
-
-                    _y.credentials[login.trigger] = JSON.parse(x);
-
-                    this.setState(_y);
-
-                });
-            })
+        chrome.runtime.sendMessage({'deleteCredential': cred}, del => {
+            setTimeout(this.fill, 2000);
         });
     }
 
-    generateKey = (d) => {
-        return `${d}_${new Date().getTime()}`;
+    generateKey = (d='123') => {
+        return `${d}_${Math.floor(Math.random() * 25000) + 1}`;
     }
 
   render() {
@@ -88,7 +87,7 @@ class Logins extends React.Component {
 
         <div>
 
-            {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent key={this.generateKey(login)} fetch={this.fetchCred} trigger={login} login={this.state.credentials}/>) : null }
+            {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
 
          </div>
 
