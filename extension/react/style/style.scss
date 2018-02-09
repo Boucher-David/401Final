@@ -36,3 +36,15 @@ html {
   overflow: hidden;
   z-index: 100;
 }
+
+.is-closed {
+  background-color: lightcoral;
+}
+
+.is-open {
+  background-color: lightsalmon
+}
+
+.Collapsible__contentOuter {
+  background-color: white;
+}

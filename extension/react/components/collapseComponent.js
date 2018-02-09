@@ -4,19 +4,26 @@ import Collapsible from 'react-collapsible';
 class CollapseComponent extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
+        console.log(this.props);
     }
 
+    _fetch = () => {
+        this.props.fetch(this.props);
+    }
 
+    generateKey = (d='123') => {
+        return `${d}_${new Date().getTime()}`;
+    }
 
     render() {
         return (
-            <Collapsible trigger={this.props.trigger}>
+            <div onClick={this._fetch}>
+            <Collapsible onClick={this._fetch} key={this.generateKey} trigger={this.props.trigger} >
                 {Object.keys(this.props.login).map((cred, i) => {
-                    return <div>
-                        <p>{this.props.login[cred]}</p>
+
+                    return <div key={this.generateKey}>
+                        <p>{this.props.login}</p>
                         <input 
-                            key={i}
                             type={cred === 'password' ? 'password' : null}
                             value={this.props.login[cred]}
                             name={cred}
@@ -24,6 +31,7 @@ class CollapseComponent extends React.Component {
                     </div>
                 })}
             </Collapsible>
+            </div>
         )
     }
 }

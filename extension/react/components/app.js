@@ -23,7 +23,6 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.display);
   }
 
 
@@ -32,30 +31,31 @@ class App extends React.Component {
     let _mk = false;
 
     chrome.storage.sync.get('vault', response => {
+      console.log(4);
       if (!response.vault) return this.props.toggle('home');
       if (response.vault.user_id) _user_id = true;
       chrome.runtime.sendMessage({'getMK': null}, (response) => {
         _mk = response;
   
         if (_mk && _user_id) return this.props.toggle('tile');
-
+        console.log(1);
         if (_user_id) return this.props.toggle('unlock');
-
+        console.log(2);
         return this.props.toggle('home');
       })  
     });
   }
 
-  componentWillMount() {
-    this._find();
-  }
+  // componentWillMount() {
+  //   this._find();
+  // }
 
 
   render() {
 
     return (
       <div>
-        {(this.props.display.home) ? <Home find={this._find} toggle={this.props.toggle} /> : null}
+        {(this.props.display.home) ? <Home toggle={this.props.toggle} /> : null}
         {(this.props.display.signup) ? <Signup toggle={this.props.toggle}/> : null}
         {(this.props.display.signin) ? <Signin toggle={this.props.toggle}/> : null}
         {(this.props.display.verify) ? <Verify toggle={this.props.toggle}/> : null}

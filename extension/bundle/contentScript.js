@@ -7,7 +7,7 @@ createPopup = () => {
     let text = `
     <div >
       <h3>Save Login?</h3>
-      <input id='nptNickname' class='nptLSD' placeholder='${window.location.host}' />
+      <input id='nptNickname' class='nptLSD' placeholder='Enter Nickname for login' />
       <button id='btnSave' class='btnLSD'>Save</button>
       <button id='btnClose' class='btnLSD'>Cancel</button>
     </div>`;

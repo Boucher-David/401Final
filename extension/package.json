@@ -38,6 +38,7 @@
     "sass-loader": "^6.0.6",
     "share-state": "1.0.2",
     "superagent": "^3.8.2",
+    "triplesec": "^3.0.26",
     "webpack": "^3.8.1"
   },
   "devDependencies": {
