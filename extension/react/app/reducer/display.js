@@ -8,7 +8,10 @@ verify: false,
 unlock: false,
 profile: true,
 tile: false,
+logins: true,
+
 signin: false
+
 }
 
 export default (state=defaultState, action) => {
@@ -16,7 +19,6 @@ export default (state=defaultState, action) => {
 
     switch(type) {
         case 'TOGGLE':
-
 
         let newState = {
             ...state

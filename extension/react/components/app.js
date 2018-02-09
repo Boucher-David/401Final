@@ -8,6 +8,7 @@ import Tile from './tile';
 import Signin from './signin';
 import Verify from './verify';
 import Unlock from './unlock';
+import Logins from './logins/_logins';
 import { toggle } from '../app/actions/displayActions'
 
 
@@ -16,6 +17,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   }
+
 
   _find = () => {
     let _user_id = false;
@@ -26,15 +28,21 @@ class App extends React.Component {
       if (response.vault.user_id) _user_id = true;
       chrome.runtime.sendMessage({'getMK': null}, (response) => {
         _mk = response;
-        console.log(1);
+  
         if (_mk && _user_id) return this.props.toggle('tile');
-        console.log(2);
+
         if (_user_id) return this.props.toggle('unlock');
-        console.log(3);
+
         return this.props.toggle('home');
       })
     });
   }
+  
+  componentWillMount() {
+    this._find();
+  }
+
+
 
   render() {
 
@@ -47,6 +55,7 @@ class App extends React.Component {
         {(this.props.display.verify) ? <Verify toggle={this.props.toggle}/> : null}
         {(this.props.display.unlock) ? <Unlock toggle={this.props.toggle}/> : null}
         {(this.props.display.tile) ? <Tile toggle={this.props.toggle}/> : null}
+        {(this.props.display.logins) ? <Logins toggle={this.props.toggle}/> : null}
       </div>
     )
   }
@@ -61,3 +70,5 @@ const mapDispatchToProps = (dispatch, getState) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
