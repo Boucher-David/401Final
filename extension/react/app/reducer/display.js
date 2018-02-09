@@ -7,7 +7,7 @@ signup: false,
 verify: false,
 unlock: false,
 profile: false,
-tile: true,
+tile: false,
 logins: true
 }
 
