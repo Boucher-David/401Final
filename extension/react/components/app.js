@@ -16,22 +16,38 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-
   }
 
-  // componentWillMount() {
-  //   let MK = chrome.runtime.sendMessage({getMK: null}, response => response);
-  //   let user_id = chrome.storage.sync.get('Vault', response => response);
 
-  //   if (MK && user_id) this.props.toggle('Tile');
-  //   if (user_id) this.props.toggle('Unlock');    
+  _find = () => {
+    let _user_id = false;
+    let _mk = false;
 
-  // }
+    chrome.storage.sync.get('vault', response => {
+      if (!response.vault) return this.props.toggle('home');
+      if (response.vault.user_id) _user_id = true;
+      chrome.runtime.sendMessage({'getMK': null}, (response) => {
+        _mk = response;
+  
+        if (_mk && _user_id) return this.props.toggle('tile');
+
+        if (_user_id) return this.props.toggle('unlock');
+
+        return this.props.toggle('home');
+      })  
+    });
+  }
+
+  componentWillMount() {
+    this._find();
+  }
+
 
   render() {
+
     return (
       <div>
-        {(this.props.display.home) ? <Home toggle={this.props.toggle} /> : null}
+        {(this.props.display.home) ? <Home find={this._find} toggle={this.props.toggle} /> : null}
         {(this.props.display.signup) ? <Signup toggle={this.props.toggle}/> : null}
         {(this.props.display.signin) ? <Signin toggle={this.props.toggle}/> : null}
         {(this.props.display.profile) ? <Profile toggle={this.props.toggle}/> : null}

@@ -16,8 +16,6 @@ class Main extends React.Component {
         console.log(props);
     }
 
-
-
     render() {
         return (
             <Provider store={store}>

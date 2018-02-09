@@ -1,88 +1,75 @@
+let credentials = {};
+
 createPopup = () => {
-    // outerDiv = document.createElement("div");
-    // outerDiv.setAttribute('id','outerDiv');
-    // document.body.appendChild(outerDiv);
+  outerDiv = document.createElement("div");
+  outerDiv.setAttribute('id','outerDiv');
+  document.body.appendChild(outerDiv);
+    let text = `
+    <div >
+      <h3>Save Login?</h3>
+      <input id='nptNickname' class='nptLSD' placeholder='${window.location.host}' />
+      <button id='btnSave' class='btnLSD'>Save</button>
+      <button id='btnClose' class='btnLSD'>Cancel</button>
+    </div>`;
 
-
-    // let text = `
-    // <div>
-    // 
-    // </div>`;
-
-    // outerDiv.innerHTML = text;
-
-    // LARRY -> you can create html elements normally and wrap them in quotes. then you simple innerHTML those quotes into the DOM. 
-    // LARRY -> write the below stuff above.
-    // LARRY -> Also, I've created contentScriptStyle.css. Move the style into that file if it isn't already in there.
-
-    wrapperDiv = document.createElement("div");
-wrapperDiv.setAttribute("style"," top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid black; padding: 10px; z-index: 101; display: inline-block; position: fixed; width: 200px; height: 100px;");
-
-wrapperTitle = document.createElement('h4');
-wrapperTitle.innerHTML = "Save Login?";
-
-wrapperInput =
-document.createElement("input");
-wrapperInput.setAttribute("placeholder", "Enter nickname");
-
-wrapperSubmit = document.createElement("button");
-wrapperSubmit.innerHTML = "Save";
-
-wrapperCancel = document.createElement("button");
-wrapperCancel.innerHTML = "No";
-
-document.body.appendChild(wrapperDiv);
-wrapperDiv.appendChild(wrapperTitle);
-wrapperDiv.appendChild(wrapperInput);
-wrapperDiv.appendChild(wrapperSubmit);
-wrapperDiv.appendChild(wrapperCancel);
+    outerDiv.innerHTML = text;
 
 }
 
-let credentials = {
-    username: 'username'
-};
+createPopup();
 
-jQuery("form").on('submit', (e) => {
-    e.preventDefault();
-
-    $("form").each(function() {
-        $(this).find("input").each(function () {
-           let _attr = jQuery(this).attr('name');
-            let _value = jQuery(this)[0].value;
-
-            if (_attr === 'username') credentials['username'] = _value;
-            if (_attr === 'email') credentials['email'] = _value;
-            if (_attr === 'password') credentials['password'] = _value;
-            if (_attr === 'user') credentials['username'] = _value;
-            if (_attr === 'url') credentials['username'] = _value;       
-         })
-      });
-
-    let _before = Object.keys(credentials)
-    
-    Object.keys(credentials).forEach(key => {
-        if (credentials[key] === '') delete credentials[key];
-    });
-
-    let _after = Object.keys(credentials);
-
-    if ((_before.length === _after.length) && (_after.length > 0)) {
-        createPopup();
-    }
-});
-
-
-saveCredentials = () => {
+saveCredentials = (nickname) => {
     // user clicks button to save credentials
     // get nickname the user wants then call this function
 
     let _save = {
-        nickname: 'amazon', // grab actual nickname from popup
+        nickname: nickname, // grab actual nickname from popup
         credentials: JSON.stringify(credentials)
     };
     chrome.runtime.sendMessage({'saveCredential': _save});
 
 }
 
-saveCredentials();
+let nptNickname = () => {
+    if (document.getElementById('nptNickname').value === '') return window.location.host;
+    return document.getElementById('nptNickname').value;
+}
+
+let save = () => {
+    let _nickname = nptNickname();
+
+    saveCredentials(_nickname);
+    btnClose();
+}
+
+let _btnSave = document.getElementById('btnSave');
+    _btnSave.addEventListener('click', save);
+
+let btnClose = () => {
+  outerDiv.parentNode.removeChild(outerDiv);
+}
+
+let _btnClose = document.getElementById('btnClose');
+_btnClose.addEventListener('click', btnClose);
+
+jQuery("form").on('submit', (e) => {
+    e.preventDefault();
+
+    jQuery("form").each(function() {
+        jQuery(this).find("input").each((a, b) =>  {
+
+           let _attr = jQuery(b).attr('name');
+            let _value = jQuery(this)[0].value;
+            if (_attr === 'username') credentials['username'] = _value;
+            if (_attr === 'email') credentials['email'] = _value;
+            if (_attr === 'password') credentials['password'] = _value;
+            if (_attr === 'user') credentials['username'] = _value;
+            if (_attr === 'url') credentials['username'] = _value;
+         })
+      });
+
+
+    outerDiv.setAttribute('style', 'display: inline-block;');      
+
+});
+

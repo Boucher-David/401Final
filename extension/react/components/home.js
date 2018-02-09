@@ -7,12 +7,13 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
   }
+
  signup = () => {
-  console.log('You clicked Signup');
+  this.props.toggle('signup');
 }
 
  signin = () => {
-  console.log('You clicked Signin');
+  this.props.toggle('signin');
 }
 
   render() {
