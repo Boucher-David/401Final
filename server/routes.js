@@ -5,6 +5,7 @@ const User = require('./schema/User');
 const Credential = require('./schema/Credential');
 const emailVerify = require('./lib/email');
 const to = require('./lib/to.js');
+const security = require('./lib/security.js');
 
 const userHelper = require('./lib/userHelper');
 const credentialHelper = require('./lib/credentialHelper');
@@ -20,6 +21,8 @@ app.use((req, res, next) => {
 });
 
 app.use(authHeader);
+
+
 
 // remove user to test signup
 // app.use((req, res, next) => {
@@ -200,9 +203,10 @@ app.post('/credential/set',async (req, res, next) => {
     if (err) return res.send(res.body);
 
     let newCredentialList = credential.logins;
-    //console.log(newCredentialList);
-    newCredentialList[req.body.vault.auth.basic.nickname] = req.body.vault.auth.basic.credentials;
+    let encrypted = await security.encrypt(req.body.vault.auth.basic.credentials);
+    // enrypt here
 
+    newCredentialList[req.body.vault.auth.basic.nickname] = encrypted;
 
 
     [err, saved] = await to(Credential.findOneAndUpdate(
@@ -223,6 +227,7 @@ app.post('/credential/set',async (req, res, next) => {
         {new: true}
     ));
 
+
     res.body.vault.logins = user.logins || null;
     res.body.vault.saved = true;
 
@@ -241,11 +246,13 @@ app.get('/credential/get/:cred', async (req, res, next) => {
     [err, credential] = await to(credentialHelper.findCredential(user._user_id));
     if (err) return res.send(res.body);
 
+    let decrypted = await security.decrypt(credential.logins[req.params.cred]);
+
     res.body.vault = {
         success: true,
-        credential: credential.logins[req.params.cred]
+        credential: decrypted
     }
-
+    
     return res.send(res.body);
 
 });

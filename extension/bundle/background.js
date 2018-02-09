@@ -87,7 +87,10 @@ let verifyEncryptionAndSend = async (obj) => {
       }
   }
 
+  verifyEncryptionAndSend({nickname:'amazon', credentials: '{}'})
+
   // this is how you save captured credentials. 
+
 
 getCredential = async (cred) => {
   let _id = await pingSync();
@@ -104,6 +107,8 @@ getCredential = async (cred) => {
     }
   });
 }
+
+
 
 deleteCredential = async (cred) => {
   let _id = await pingSync();
