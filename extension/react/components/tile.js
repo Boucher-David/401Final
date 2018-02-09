@@ -1,17 +1,29 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
+import PWGenerator from './pwGenerator';
+import About from './about';
+import Profile from './profile/_profile';
+import Logins from './logins/_logins';
 
 class Tile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      login: false,
-      gen: false,
+
+    let start = {
+      logins: false,
+      pwGenerator: false,
       profile: false,
       about: false
-    }
+    };
+    this.state = {
+      ...start
+    };
+  }
+
+  componentWillUpdate() {
+    console.log(this.state);
   }
 
   setComponent = (e) => {
@@ -21,30 +33,50 @@ class Tile extends React.Component {
     });
 
     this.setState({[e.target.id]: true});
-    console.log(this.state);
+    
   }
 
+// gotoLogin = () => {
+//   console.log('You clicked gotoLogin');
 
+// }
+
+// gotoPWGenerator = () => {
+//   console.log('You clicked gotoPWGenerator');
+
+// }
+// gotoProfile = () => {
+//   console.log('You clicked gotoProfile');
+
+// }
+// gotoAbout = () => {
+//   console.log('You clicked gotoAbout');
+
+// }
   render() {
     return (
       <div>
-        <h3>Main Menu</h3>
-          <button onClick={this.setComponent} id="login">Go To Login</button>
-          <button onClick={this.setComponent} id="gen">Gen Password</button> <br />
-          <button onClick={this.setComponent} id="profile">Got To Profile</button>
-          <button onClick={this.setComponent} id="about">About App Team</button>
-
-
-          <div>
-            {(this.state.login) ? <Logins /> : null}
-            {(this.state.gen) ? <Gen /> : null}
-            {(this.state.profile) ? <Profile toggle={this.props.toggle}/> : null}
-            {(this.state.about) ? <About toggle={this.props.toggle}/> : null}
+        <div>
+          <h3>Main Menu</h3>
+            <button onClick={this.setComponent} id="logins">Logins</button>
+            <button onClick={this.setComponent} id="pwGenerator">PW Generator</button>
+            <button onClick={this.setComponent} id="profile">Profile</button>
+            <button onClick={this.setComponent} id="about">About</button>
         </div>
-
+          <div>
+          {(this.state.logins) ? <Logins /> : null}
+          {(this.state.pwGenerator) ? <PWGenerator /> : null}
+          {(this.state.profile) ? <Profile /> : null}
+          {(this.state.about) ? <About /> : null}
+        </div>
       </div>
     )
   }
 }
 
 export default Tile;
+
+{/* <button onClick={this.gotoLogin}>Go To Login</button>
+          <button onClick={this.gotoPWGenerator}>Gen Password</button> <br />
+          <button onClick={this.gotoProfile}>Got To Profile</button>
+          <button onClick={this.gotoAbout}>About App Team</button> */}

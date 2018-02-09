@@ -8,6 +8,7 @@ import Tile from './tile';
 import Signin from './signin';
 import Verify from './verify';
 import Unlock from './unlock';
+import Logins from './logins/_logins';
 import { toggle } from '../app/actions/displayActions'
 
 
@@ -16,6 +17,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   }
+
 
   _find = () => {
     let _user_id = false;
@@ -40,6 +42,7 @@ class App extends React.Component {
     this._find();
   }
 
+
   render() {
 
     return (
@@ -51,6 +54,7 @@ class App extends React.Component {
         {(this.props.display.verify) ? <Verify toggle={this.props.toggle}/> : null}
         {(this.props.display.unlock) ? <Unlock toggle={this.props.toggle}/> : null}
         {(this.props.display.tile) ? <Tile toggle={this.props.toggle}/> : null}
+        {(this.props.display.logins) ? <Logins toggle={this.props.toggle}/> : null}
       </div>
     )
   }
@@ -65,3 +69,5 @@ const mapDispatchToProps = (dispatch, getState) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
