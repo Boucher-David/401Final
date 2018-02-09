@@ -56,13 +56,16 @@ class Tile extends React.Component {
   render() {
     return (
       <div>
+        <h2 className="heading">Main Menu</h2>
         <div>
-          <h3>Main Menu</h3>
-            <button onClick={this.setComponent} id="logins">Logins</button>
-            <button onClick={this.setComponent} id="pwGenerator">PW Generator</button>
-            <button onClick={this.setComponent} id="profile">Profile</button>
-            <button onClick={this.setComponent} id="about">About</button>
+          <button className="btnTile" onClick={this.setComponent} id="login">Login</button>
+          <button className="btnTile" onClick={this.setComponent} id="gen">Password</button> <br />
         </div>
+        <div>
+          <button className="btnTile" onClick={this.setComponent} id="profile">Profile</button>
+          <button className="btnTile" onClick={this.setComponent} id="about">About</button>
+        </div>
+
           <div>
           {(this.state.logins) ? <Logins /> : null}
           {(this.state.pwGenerator) ? <PWGenerator /> : null}
@@ -75,8 +78,3 @@ class Tile extends React.Component {
 }
 
 export default Tile;
-
-{/* <button onClick={this.gotoLogin}>Go To Login</button>
-          <button onClick={this.gotoPWGenerator}>Gen Password</button> <br />
-          <button onClick={this.gotoProfile}>Got To Profile</button>
-          <button onClick={this.gotoAbout}>About App Team</button> */}

@@ -13,17 +13,17 @@ class Logout extends React.Component {
       this.props.toggle('home');
       chrome.storage.sync.remove('vault');
       chrome.runtime.sendMessage({'setMK': false});
-      
+
     }
 
   render() {
     return (
       <div>
           <label>
-            <h2>Logout...</h2>      
+            <h2>Logout...</h2>
           </label>
-          <button onClick={this.handleSubmit}>Logout</button>
-          
+          <button className="btnVault" onClick={this.handleSubmit}>Logout</button>
+
         </div>
     );
   }

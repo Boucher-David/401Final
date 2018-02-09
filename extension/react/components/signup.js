@@ -7,7 +7,7 @@ class Signup extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       username: 'username',
       email1: 'david_boucher@outlook.com',
@@ -34,7 +34,7 @@ class Signup extends React.Component {
 
 
       superagent.post('http://localhost:3000/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
-        console.log(response.body.vault); 
+        console.log(response.body.vault);
       if (response.body.vault.signup) return this.props.toggle('verify');
 
       });
@@ -43,7 +43,7 @@ class Signup extends React.Component {
   }
   render() {
 
-    let email1 = 
+    let email1 =
                 <label htmlFor='email1'>
                   <span>Email1</span>
                   <input
@@ -56,10 +56,10 @@ class Signup extends React.Component {
                    />
                 </label>
 
-    let email2 = 
+    let email2 =
                 <label htmlFor='email2'>
                 <span>Email2</span>
-                <input 
+                <input
                   // id="email"
                   type="text"
                   name="email2"
@@ -72,10 +72,10 @@ class Signup extends React.Component {
 
 
 
-    let password1 = 
+    let password1 =
                 <label htmlFor='password1'>
                   <span>Password1</span>
-                  <input 
+                  <input
                     type="password"
                     name="password1"
                     placeholder="password"
@@ -85,10 +85,10 @@ class Signup extends React.Component {
                     />
                 </label>
 
-  let password2 = 
+  let password2 =
                 <label htmlFor='password2'>
                 <span>Password2</span>
-                <input 
+                <input
                   type="password"
                   name="password2"
                   placeholder="password"
@@ -97,17 +97,17 @@ class Signup extends React.Component {
                   onChange={this.handleChange}
                   />
                 </label>
-    
+
 
 
     return (
       <div>
 
         <form onSubmit={this.handleSubmit}>
-          <h3>New User, Create Account</h3>
+          <h2 className="heading">SIGN UP NOW!</h2>
           <label htmlFor='username'>
             <span>Username</span>
-            <input 
+            <input
               // id="email"
               type="text"
               name="username"
@@ -121,12 +121,12 @@ class Signup extends React.Component {
           {email1}
           {email2}
           {password1}
-          {password2}
-        
-          
+          {password2}<br />
+
+
           <br />
 
-          <button type="submit">Create Account</button>
+          <button className="btnVault" type="submit">Create Account</button>
 
         </form>
       </div>

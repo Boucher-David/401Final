@@ -19,7 +19,7 @@ class Profile extends React.Component {
     };
   }
 
-  
+
 
   setComponent = (e) => {
     e.preventDefault();
@@ -35,15 +35,15 @@ class Profile extends React.Component {
   render() {
 
     return(
-     
+
       <div>
       Hello, {this.state.username}
-      
-      <div> 
-      <button onClick={this.setComponent} id="email">Change Email</button>
-      <button onClick={this.setComponent} id="password">Change Password</button>
-      <button onClick={this.setComponent} id="logout">Logout</button>
-      <button onClick={this.setComponent} id="delete">Delete</button>
+
+      <div><button data-hover="click me!"><div>Hover me!</div></button>
+      <button data-hover="Change Email?" className="container" onClick={this.setComponent} id="email"><div>Change Email</div></button>
+      <button className="container" onClick={this.setComponent} id="password">Change Password</button>
+      <button className="container" onClick={this.setComponent} id="logout">Logout</button>
+      <button className="container" onClick={this.setComponent} id="delete">Delete</button>
       </div>
 
       <div>
@@ -52,7 +52,7 @@ class Profile extends React.Component {
       {(this.state.logout) ? <Logout toggle={this.props.toggle}/> : null}
       {(this.state.delete) ? <Delete toggle={this.props.toggle}/> : null}
       </div>
-      
+
       </div>
     )
   }

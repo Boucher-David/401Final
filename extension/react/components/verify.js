@@ -33,12 +33,12 @@ class Verify extends React.Component {
   render() {
     return (
       <div>
-        <h2>Verify Activity</h2>
+        <h2 className="heading">Verify Activity</h2>
         <p>We sent you a code to your email. Paste it below:</p>
         <input id='user-code' type="text" onChange={this.captureCode}/>
         <br />
         <br />
-        <button onClick={this.submitCode}>Submit</button>
+        <button className="btnVault" onClick={this.submitCode}>Submit</button>
         {(this.state.error) ? <p>{this.state.message}</p> : null}
       </div>
     )
