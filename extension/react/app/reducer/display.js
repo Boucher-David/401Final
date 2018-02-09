@@ -1,16 +1,18 @@
-import signup from "../../components/profile/_profile";
-
 let defaultState = {
 
-home: false,
 signup: false,
-verify: false,
-unlock: false,
+home: false,
 profile: false,
 tile: false,
-logins: true,
-
-signin: false
+signin: false,
+verify: false,
+unlock: false,
+email: false,
+pw: false,
+logout: false,
+delete: false,
+cred: true,
+about: false
 
 }
 

@@ -2,6 +2,9 @@ import React from 'react';
 import Collapsible from 'react-collapsible';
 
 
+import CollapseComponent from './collapseComponent.js';
+
+
 class Logins extends React.Component {
 
             state = {
@@ -27,55 +30,15 @@ class Logins extends React.Component {
                 
             }
         
-                
-       
     }
 
-    handleChange = (e) => {
-        console.log(e.target.value, 'target')
-    
-        let {name, value} = e.target;
-    
-        this.setState({[name]:value});
-      }
-
-    //   category = () => {
-    //     this.state.logins.map((login, i) => {
-    //         let category = {};
-    //         category[login] = {};
-    //         this.setState({credentials: category});
-    //     })
-    //     return category();
-    //     console.log(this.state);
-    //   }
 
 
   render() {
     return(
 
         <div>
-
-            { 
-                this.state.logins.map( (login,i) =>
-                    <Collapsible trigger={login}>
-                    
-                        {
-                            Object.entries(this.state.credentials[login]).map( (cred,i) => {
-                            
-                                <div key={i}>
-                                    <p>{cred}:</p>
-                                    <input 
-                                    type={cred === 'password' ? 'password' : null}
-                                    value={this.state.credentials[login][cred]}
-                                    name={cred}
-                                    />
-                                </div>
-                            })
-                        }       
-
-                    </Collapsible>
-                )
-            }
+            {this.state.logins.map((login, i) => <CollapseComponent key={i} trigger={login} login={this.state.credentials[login]}/>)}
 
          </div>
 
