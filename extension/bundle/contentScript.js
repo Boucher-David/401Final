@@ -26,8 +26,7 @@ createPopup = () => {
 
 
 saveCredentials = (nickname) => {
-    // user clicks button to save credentials
-    // get nickname the user wants then call this function
+
 
     let _save = {
         nickname: nickname, // grab actual nickname from popup
@@ -38,12 +37,12 @@ saveCredentials = (nickname) => {
 }
 
 let nptNickname = () => {
-    if (document.getElementById('nptNickname').value === '') return window.location.host;
     return document.getElementById('nptNickname').value;
 }
 
 let save = () => {
     let _nickname = nptNickname();
+    if (_nickname === '') return;
 
     saveCredentials(_nickname);
     btnClose();

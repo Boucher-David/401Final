@@ -43,11 +43,11 @@ class CollapseComponent extends React.Component {
                             value={this.props.login[this.props.trigger][cred]}
                             name={cred}
                         />
-                        {(cred === 'password') ? <button onClick={() => this.copy(this.props.login[this.props.trigger][cred])}>Copy Password</button> : null}
+                        {(cred === 'password') ? <button className='btnVault' onClick={() => this.copy(this.props.login[this.props.trigger][cred])}>Copy Password</button> : null}
                     </div>
                 })}
                 
-                <button onClick={() => this.deleteCred(this.props.trigger)}>Delete Credential</button>
+                <button className='btnVault' onClick={() => this.deleteCred(this.props.trigger)}>Delete Credential</button>
             </Collapsible>
         )
     }
