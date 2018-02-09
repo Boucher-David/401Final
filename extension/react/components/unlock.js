@@ -20,7 +20,8 @@ class Unlock extends React.Component {
 
 }
 
-  gotoProfile = () => {
+  gotoProfile = (e) => {
+    e.preventDefault();
     this.props.toggle('profile');
 }
 

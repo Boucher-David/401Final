@@ -15,7 +15,6 @@ module.exports = {
     },
 
     decrypt: async (_text) => {
-        console.log(_text);
         return new Promise ((resolve, reject) => {
             triplesec.decrypt({
                 data: new triplesec.Buffer(_text, 'hex'),

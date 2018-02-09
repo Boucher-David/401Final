@@ -17,6 +17,7 @@ class Profile extends React.Component {
 
 
   setComponent = (e) => {
+    e.preventDefault();
     this.props.toggle(e.target.id);
 
   }
@@ -25,8 +26,6 @@ class Profile extends React.Component {
   render() {
 
     return(
-
-      <div>
       <div>
         <button data-hover="click me!"><div>Hover me!</div></button>
         <button data-hover="Change Email?" className="container" onClick={this.setComponent} id="email"><div>Change Email</div></button>
@@ -35,8 +34,6 @@ class Profile extends React.Component {
         <button className="container" onClick={this.setComponent} id="delete">Delete</button>
       </div>
 
-
-      </div>
     )
   }
 }

@@ -12,7 +12,7 @@ class Logins extends React.Component {
         super(props);
         this.state = {
             logins: [],
-            message: 'hello',
+            message: '',
             credentials: {
             }
     }
@@ -25,7 +25,7 @@ class Logins extends React.Component {
           data: new triplesec.Buffer(text, 'hex'),
           key: new triplesec.Buffer(key)
         }, (err, decryptString) => {
-
+            if (err) return reject("Unable to decrypt credentials. Please check your master key.")
           resolve(decryptString.toString());
         })
       })
@@ -71,6 +71,9 @@ class Logins extends React.Component {
                             })
 
                             this.setState(_state);
+                            this.setState({message: ''});
+                        }).catch(err => {
+                            this.setState({message: err});
                         });
                     });
                 })
@@ -100,10 +103,11 @@ class Logins extends React.Component {
   render() {
     return(
 
-        <div>
-
+        <div>   
+            
             {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
             <button className='btnVault' onClick={this.back}>Back</button>
+            <div>{this.state.message}</div>
          </div>
 
     );

@@ -19,7 +19,7 @@ class Tile extends React.Component {
         <h2 className="heading">Main Menu</h2>
         <div>
           <button className="btnTile" onClick={this.setComponent} id="cred">Login</button>
-          <button className="btnTile" onClick={this.setComponent} id="pw">Password</button> <br />
+          <button className="btnTile" onClick={this.setComponent} id="generator">Password</button> <br />
         </div>
         <div>
           <button className="btnTile" onClick={this.setComponent} id="profile">Profile</button>

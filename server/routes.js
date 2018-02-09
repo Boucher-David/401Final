@@ -191,15 +191,15 @@ app.get('/verify/:id', async (req, res, next) => {
 
 app.post('/credential/set',async (req, res, next) => {
     res.body.vault.saved = false;   
-    console.log('test');
-
+    
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id) return res.send("Done");
 
     [err, user] =  await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id}));
+  
     if (err) return res.send(res.body);
 
     [err, credential] = await to(credentialHelper.findCredential(user._user_id));
-
+   
     if (err) return res.send(res.body);
 
     let newCredentialList = credential.logins;
@@ -215,7 +215,7 @@ app.post('/credential/set',async (req, res, next) => {
         {new: true}
     ));
 
-    
+
     if (err) return res.send(res.body);
 
     let savedLogins = Object.keys(saved.logins);
@@ -252,7 +252,6 @@ app.get('/credential/get/:cred', async (req, res, next) => {
         success: true,
         credential: decrypted
     }
-    
     return res.send(res.body);
 
 });

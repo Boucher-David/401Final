@@ -5,8 +5,9 @@ class About extends React.Component {
         super(props);
     }
 
-    back = () => {
-        this.props.toggle('profile');
+    back = (e) => {
+        e.preventDefault();
+        this.props.toggle('tile');
     }
     render() {
 
