@@ -28,12 +28,15 @@ class Tile extends React.Component {
   render() {
     return (
       <div>
-        <h3>Main Menu</h3>
-          <button onClick={this.setComponent} id="login">Go To Login</button>
-          <button onClick={this.setComponent} id="gen">Gen Password</button> <br />
-          <button onClick={this.setComponent} id="profile">Got To Profile</button>
-          <button onClick={this.setComponent} id="about">About App Team</button>
-
+        <h2 className="heading">Main Menu</h2>
+        <div>
+          <button className="btnTile" onClick={this.setComponent} id="login">Login</button>
+          <button className="btnTile" onClick={this.setComponent} id="gen">Password</button> <br />
+        </div>
+        <div>
+          <button className="btnTile" onClick={this.setComponent} id="profile">Profile</button>
+          <button className="btnTile" onClick={this.setComponent} id="about">About</button>
+        </div>
 
           <div>
             {(this.state.login) ? <Logins /> : null}

@@ -32,12 +32,8 @@ class App extends React.Component {
         if (_user_id) return this.props.toggle('unlock');
         console.log(3);
         return this.props.toggle('home');
-      })  
+      })
     });
-  }
-
-  componentWillMount() {
-    this._find();
   }
 
   render() {
@@ -61,7 +57,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, getState) => ({
-  toggle: component => dispatch(toggle(component)) 
+  toggle: component => dispatch(toggle(component))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -7,7 +7,7 @@ class Signin extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       username: 'username',
       email: 'david_boucher@outlook.com',
@@ -48,7 +48,7 @@ class Signin extends React.Component {
 
   render() {
 
-    let username = 
+    let username =
                 <label htmlFor='username'>
                   <span>Username</span>
                   <input
@@ -61,10 +61,10 @@ class Signin extends React.Component {
                    />
                 </label>
 
-    let password = 
+    let password =
                 <label htmlFor='password'>
                   <span>Password</span>
-                  <input 
+                  <input
                     type="password"
                     name="password"
                     placeholder="password"
@@ -85,21 +85,21 @@ class Signin extends React.Component {
       onChange={this.handleChange}
       />
   </label>
-    
+
 
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <h3>Existing Users Login</h3>
+          <h2 className="heading">Welcome Back!</h2>
 
           {username}
           {password}
           {email}
 
-          <button type='submit'>Login</button>
+          <button className="btnVault" type='submit'>Login</button>
         </form>
 
-        
+
       </div>
     )
 

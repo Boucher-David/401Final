@@ -6,7 +6,7 @@ home: false,
 signup: false,
 verify: false,
 unlock: false,
-profile: false,
+profile: true,
 tile: false,
 signin: false
 }
@@ -19,13 +19,13 @@ export default (state=defaultState, action) => {
 
 
         let newState = {
-            ...state 
+            ...state
         }
         Object.keys(newState).forEach(component => {
             newState[component] = false
         });
         newState[payload] = true;
-        
+
         return newState;
         break;
         default:

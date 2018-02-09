@@ -16,10 +16,10 @@ class Delete extends React.Component {
     return (
       <form >
           <label>
-            <h2>Delete</h2>      
+            <h2>Delete</h2>
           </label>
-          <button onClick={this.handleSubmit}>Delete</button>
-          
+          <button className="btnVault" onClick={this.handleSubmit}>Delete</button>
+
         </form>
     );
   }
