@@ -190,7 +190,8 @@ app.get('/verify/:id', async (req, res, next) => {
 });
 
 app.post('/credential/set',async (req, res, next) => {
-    res.body.vault.saved = false;
+    res.body.vault.saved = false;   
+    console.log('test');
 
     if (!req.body.vault.auth || !req.body.vault.auth.basic.user_id) return res.send("Done");
 
@@ -290,6 +291,37 @@ app.delete('/credential/delete/:cred', async (req, res, next) => {
 
 
     return res.send(res.body);
+});
+
+app.delete('/credential/reset' , async (req, res, next) => {
+
+    res.body.vault = {
+        deleted: false
+    };
+
+    let [err, user] = await to(userHelper.findUser({user_id: req.body.vault.auth.basic.user_id})) || [err, user];
+    [err, credential] = await to(credentialHelper.findCredential(user._user_id));
+
+    if (err) return res.send(res.body);
+
+    [err, updatedUser] = await to(User.findOneAndUpdate(
+        {user_id: user.user_id},
+        {$set: {logins: []}},
+        {new : true}
+    ));
+
+    [err, updatedCredential] = await to(Credential.findOneAndUpdate(
+        {user_id: credential.user_id},
+        {$set: {logins: {}}},
+        {new: true}
+    ));
+
+    if (err) return res.send(res.body);
+
+    res.body.vault.deleted = true;
+    res.body.vault.logins = [];
+    return res.send(res.body);
+
 });
 
 app.get('/*', async (req, res, next) => {
