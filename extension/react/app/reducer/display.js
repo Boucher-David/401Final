@@ -2,11 +2,11 @@ let defaultState = {
 
     signup: false,
     home: false,
-    profile: false,
+    profile: true,
     tile: false,
     signin: false,
     verify: false,
-    unlock: true,
+    unlock: false,
     email: false,
     pw: false,
     logout: false,
@@ -14,19 +14,28 @@ let defaultState = {
     cred: false,
     about: false
     
-}
-
+    }
+    
     export default (state=defaultState, action) => {
-        let newState = {...state};
         let {type, payload} = action;
-        if (type === 'TOGGLE'){
-
-            
+    
+        switch(type) {
+            case 'TOGGLE':
+    
+            let newState = {
+                ...state 
+            }
             Object.keys(newState).forEach(component => {
                 newState[component] = false
             });
             newState[payload] = true;
-
+    
+            
+            return newState;
+            break;
+            default:
+                return state;
         }
-        return newState;
+    
+    
     }

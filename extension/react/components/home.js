@@ -19,7 +19,7 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <img src="VaultLogo.png" class="header" /><h2 class="title">PROJECT VAULT</h2><br /><br />
+        <img src="VaultLogo.png" className="header" /><h2 className="title">PROJECT VAULT</h2><br /><br />
         <button className="btnVault" onClick={this.signup}>Signup</button>
         <button className="btnVault" onClick={this.signin}>Signin</button>
       </div>
