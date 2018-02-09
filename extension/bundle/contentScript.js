@@ -1,5 +1,8 @@
 let credentials = {};
 
+let _btnSave;
+let _btnClose;
+
 createPopup = () => {
   outerDiv = document.createElement("div");
   outerDiv.setAttribute('id','outerDiv');
@@ -14,9 +17,13 @@ createPopup = () => {
 
     outerDiv.innerHTML = text;
 
+    _btnSave = document.getElementById('btnSave');
+    _btnSave.addEventListener('click', save);
+
+    _btnClose = document.getElementById('btnClose');
+    _btnClose.addEventListener('click', btnClose);
 }
 
-createPopup();
 
 saveCredentials = (nickname) => {
     // user clicks button to save credentials
@@ -42,15 +49,11 @@ let save = () => {
     btnClose();
 }
 
-let _btnSave = document.getElementById('btnSave');
-    _btnSave.addEventListener('click', save);
-
 let btnClose = () => {
   outerDiv.parentNode.removeChild(outerDiv);
+  credentials = {};
 }
 
-let _btnClose = document.getElementById('btnClose');
-_btnClose.addEventListener('click', btnClose);
 
 jQuery("form").on('submit', (e) => {
     e.preventDefault();
@@ -59,17 +62,19 @@ jQuery("form").on('submit', (e) => {
         jQuery(this).find("input").each((a, b) =>  {
 
            let _attr = jQuery(b).attr('name');
-            let _value = jQuery(this)[0].value;
-            if (_attr === 'username') credentials['username'] = _value;
-            if (_attr === 'email') credentials['email'] = _value;
-            if (_attr === 'password') credentials['password'] = _value;
-            if (_attr === 'user') credentials['username'] = _value;
-            if (_attr === 'url') credentials['username'] = _value;
+
+            let _value = jQuery(b)[0].value;
+
+
+            if (_attr === 'username' && _value !== '') credentials['username'] = _value;
+            if (_attr === 'email'&& _value !== '') credentials['email'] = _value;
+            if (_attr === 'password'&& _value !== '') credentials['password'] = _value;
+            if (_attr === 'user'&& _value !== '') credentials['username'] = _value;
+            if (_attr === 'url'&& _value !== '') credentials['username'] = _value;
          })
       });
-
-
-    outerDiv.setAttribute('style', 'display: inline-block;');      
+      
+      if (Object.keys(credentials).length > 0) return createPopup();     
 
 });
 

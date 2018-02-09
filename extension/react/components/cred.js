@@ -6,7 +6,6 @@ import superagent from 'superagent';
 
 import CollapseComponent from './collapseComponent.js';
 
-
 class Logins extends React.Component {
 
     constructor(props) {
@@ -60,9 +59,21 @@ class Logins extends React.Component {
 
             this.setState(_state);
 
-            this.state.logins.map(login => {
 
-                this.getCredential(login);
+
+            this.state.logins.map(login => {
+                chrome.runtime.sendMessage({'getCredential': null}, _p => {
+                    this.getCredential(login, ).then(_l => {
+                        this.decryptPassword(_l, _p).then(_x => {
+                            Object.keys(JSON.parse(_x)).forEach(_u => {
+                                _state.credentials[login][_u] = JSON.parse(_x)[_u];
+                            })
+
+                            this.setState(_state);
+                        });
+                    });
+                })
+
             });
         });
     }
@@ -72,9 +83,9 @@ class Logins extends React.Component {
     }
 
     deleteCred = (cred) => {
-
-        chrome.runtime.sendMessage({'deleteCredential': cred}, del => {
-            setTimeout(this.fill, 2000);
+        chrome.runtime.sendMessage({'deleteCredential': cred});
+        this.setState({
+            logins: this.state.logins.filter((_, i) => _ !== cred)
         });
     }
 
