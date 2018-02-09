@@ -29,6 +29,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             MK = request[message[0]];
             return;
 
+        case 'saveCredential':
+          verifyEncryptionAndSend(request['saveCredential']);
+          return;
+
         case 'saveLogins':
             saveSync('logins',request['saveLogins']);
             return;
@@ -84,15 +88,11 @@ let verifyEncryptionAndSend = async (obj) => {
   }
 
   // this is how you save captured credentials. 
-//   verifyEncryptionAndSend({
-//     nickname: 'amazon',
-//     credentials: 'string'
-//   });
 
 getCredential = async (cred) => {
   let _id = await pingSync();
   let _obj = {};
-  
+
   _obj.user_id = _id.user_id;
   superagent.get(`http://localhost:3000/credential/get/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
     if (response.body.vault.success) {
@@ -118,8 +118,19 @@ deleteCredential = async (cred) => {
   })
 }
 
+deleteAll = async () => {
+  let _id = await pingSync();
+  let _obj = {};
+  
+  _obj.user_id = _id.user_id;
 
-
+  superagent.delete(`http://localhost:3000/credential/reset`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
+    console.log(response);
+    if (response.body.vault.deleted) {
+      saveSync('logins', response.body.vault.logins);
+    }
+  });
+}
 
 
 // save user_id
