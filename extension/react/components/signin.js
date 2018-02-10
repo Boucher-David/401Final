@@ -39,6 +39,7 @@ class Signin extends React.Component {
       } else {
         chrome.runtime.sendMessage({'saveID': response.body.user}, res => {
           chrome.runtime.sendMessage({'saveLogins': response.body.logins});
+          console.log('here');
           this.props.toggle('unlock');
         });
 
