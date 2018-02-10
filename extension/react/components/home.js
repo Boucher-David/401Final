@@ -18,10 +18,10 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="home">
         <img src="VaultLogo.png" className="header" /><h2 className="title">PROJECT VAULT</h2><br /><br />
-        <button className="btnVault" onClick={this.signup}>Signup</button>
-        <button className="btnVault" onClick={this.signin}>Signin</button>
+        <button onClick={this.signup}>Signup</button>
+        <button onClick={this.signin}>Signin</button>
       </div>
     )
   }
