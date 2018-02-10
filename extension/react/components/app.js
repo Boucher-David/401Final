@@ -46,9 +46,9 @@ class App extends React.Component {
     });
   }
 
-  // componentWillMount() {
-  //   this._find();
-  // }
+  componentWillMount() {
+    this._find();
+  }
 
 
 

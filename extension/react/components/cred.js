@@ -11,17 +11,10 @@ class Logins extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            logins: ['amazon', 'facebook'],
+            logins: [],
             message: '',
-            credentials: {
-                amazon: {
-                    username: 'username'
-                },
-                facebook: {
-                    username: 'username'
-                }
-            }
-    }
+            credentials: {}
+        }
     }
 
     decryptPassword = (text, key) => {
@@ -52,7 +45,6 @@ class Logins extends React.Component {
 
     fill = () => {
         chrome.storage.sync.get('vault', r => {
-                console.log(r);
             this.setState({user_id: r.vault.user_id});
             if (r.vault.logins.length === 0) return;
 
