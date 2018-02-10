@@ -24,7 +24,7 @@ class Email extends React.Component {
     e.preventDefault();
     chrome.storage.sync.get('vault', response => {
       this.setState({'user_id': response.vault.user_id});
-   
+
       let _string = JSON.stringify(this.state);
 
       superagent.post('http://localhost:3000/profile/update/email').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
@@ -39,17 +39,17 @@ class Email extends React.Component {
     this.props.toggle('profile');
   }
 
-  
+
 
   render() {
     return (
-      <div>
-        
+      <div className="signup">
+
         <form onSubmit={this.handleSubmit}>
           <label>
-            <span>Update Email</span>
+            <h2 className="heading">Update Email</h2>
             < br/>
-            <input 
+            <input
               type='text'
               name='oldEmail'
               required='true'
@@ -66,17 +66,18 @@ class Email extends React.Component {
               value={this.state.email2}
               onChange={this.handleChange}
             />
-                  
+
           </label>
           <button type="submit">Save</button>
+          <button onClick={this.back}>Back</button>
           <p>{this.state.message}</p>
         </form>
-    
-        
-      <button onClick={this.back}>Back to profile</button>
-        
+
+
+
+
       </div>
-      
+
     )
   }
 }

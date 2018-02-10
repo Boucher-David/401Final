@@ -20,17 +20,21 @@ class Profile extends React.Component {
     this.props.toggle(e.target.id);
 
   }
-
+  back = (e) => {
+    e.preventDefault();
+    this.props.toggle("tile");
+  }
 
   render() {
 
     return(
-      <div>
-        <button data-hover="click me!"><div>Hover me!</div></button>
-        <button data-hover="Change Email?" className="container" onClick={this.setComponent} id="email"><div>Change Email</div></button>
-        <button className="container" onClick={this.setComponent} id="password">Change Password</button>
-        <button className="container" onClick={this.setComponent} id="logout">Logout</button>
-        <button className="container" onClick={this.setComponent} id="delete">Delete</button>
+      <div className="profile">
+        <h1 className="heading">Profile</h1>
+        <button onClick={this.setComponent} id="email">Change Email</button>
+        <button onClick={this.setComponent} id="pw">Change Password</button>
+        <button onClick={this.setComponent} id="logout">Logout</button>
+        <button onClick={this.setComponent} id="delete">Delete</button>
+        <button onClick={this.back}>Back</button>
       </div>
 
     )

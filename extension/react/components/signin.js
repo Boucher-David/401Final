@@ -46,6 +46,11 @@ class Signin extends React.Component {
     });
   }
 
+  back = (e) => {
+    e.preventDefault();
+    this.props.toggle("home");
+  }
+
   render() {
 
     let username =
@@ -88,7 +93,7 @@ class Signin extends React.Component {
 
 
     return (
-      <div>
+      <div className="signup">
         <form onSubmit={this.handleSubmit}>
           <h2 className="heading">Welcome Back!</h2>
 
@@ -96,7 +101,8 @@ class Signin extends React.Component {
           {password}
           {email}
 
-          <button className="btnVault" type='submit'>Login</button>
+          <button type='submit'>Login</button>
+          <button onClick={this.back}>Back</button>
         </form>
 
 

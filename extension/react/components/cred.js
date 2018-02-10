@@ -96,7 +96,7 @@ class Logins extends React.Component {
     generateKey = (d='123') => {
         return `${d}_${Math.floor(Math.random() * 25000) + 1}`;
     }
-    
+
     back = () => {
         this.props.toggle('tile');
     }
@@ -110,8 +110,8 @@ class Logins extends React.Component {
   render() {
     return(
 
-        <div>   
-            
+        <div className="signin">   
+
             {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent remove={this.remove} get={this.get} delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
             <button className='btnVault' onClick={this.back}>Back</button>
             <div>{this.state.message}</div>

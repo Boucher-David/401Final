@@ -15,15 +15,13 @@ class Tile extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2 className="heading">Main Menu</h2>
+      <div className="profile">
+        <h1 className="heading">Main Menu</h1>
         <div>
-          <button className="btnTile" onClick={this.setComponent} id="cred">Login</button>
-          <button className="btnTile" onClick={this.setComponent} id="generator">Password</button> <br />
-        </div>
-        <div>
-          <button className="btnTile" onClick={this.setComponent} id="profile">Profile</button>
-          <button className="btnTile" onClick={this.setComponent} id="about">About</button>
+          <button onClick={this.setComponent} id="cred">Login</button>
+          <button onClick={this.setComponent} id="pwGenerator">Password</button> <br />
+          <button onClick={this.setComponent} id="profile">Profile</button>
+          <button onClick={this.setComponent} id="about">About</button>
         </div>
       </div>
     )
