@@ -54,7 +54,6 @@ let btnClose = () => {
   credentials = {};
 }
 
-
 jQuery("form").on('submit', (e) => {
     e.preventDefault();
 
