@@ -32,7 +32,6 @@ saveCredentials = (nickname) => {
         nickname: nickname, // grab actual nickname from popup
         credentials: JSON.stringify(credentials)
     };
-
     chrome.runtime.sendMessage({'saveCredential': _save});
 
 }

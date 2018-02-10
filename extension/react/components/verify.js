@@ -20,6 +20,7 @@ class Verify extends React.Component {
 
    if (this.state.code === '') return this.setState({error: true, message: 'Please enter code.'});
     superagent.get(`http://vault-extension.herokuapp.com/verify/${this.state.code}`).then(response => {
+      console.log('verify: ',response.body.vault);
       if (response.body.vault.verified) return this.props.toggle('signin');
       return this.setState({error: true, message: "Unable to verify. Try again."})
     });

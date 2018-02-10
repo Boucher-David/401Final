@@ -54,6 +54,7 @@ app.post('/profile/signup', async (req, res, next) => {
     if (err) return res.send(res.body);
     
     [err, verify] = await to(emailVerify(newUser.email, newUser.verifyCode));
+    console.log('error:', err);
     if (err) User.findOneAndRemove({username: credentials.username});
 
     if (err) return res.send(res.body);
@@ -69,16 +70,19 @@ app.post('/profile/signin', async (req, res, next) => {
     res.body.vault.signin = false;
 
     [err, user] = await to(userHelper.findUser({username: credentials['username']}));
-    
+
     if (err) return res.send(res.body.vault);
 
     [err, email] = await to(userHelper.findUser({email: credentials['email']}));
+
     if (err) return res.send(res.body.vault);
 
     [err, password] = await to(userHelper.compare(credentials['password'], user.password));
+
     if (!password) return res.send(res.body.vault);
 
     [err, credential] = await to(credentialHelper.findCredential(user.user_id));
+
     if (err) return res.send(res.body.vault);
 
     res.body.vault = {

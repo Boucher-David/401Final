@@ -33,6 +33,7 @@ class Signup extends React.Component {
       let _string = JSON.stringify(credentials);
 
       superagent.post('http://vault-extension.herokuapp.com/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
+        console.log('signup: ',response.body.vault);
       if (response.body.vault.signup) return this.props.toggle('verify');
 
       });

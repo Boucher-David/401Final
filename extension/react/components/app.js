@@ -29,7 +29,7 @@ class App extends React.Component {
   _find = () => {
     let _user_id = false;
     let _mk = false;
-
+    
     chrome.storage.sync.get('vault', response => {
 
       if (!response.vault) return this.props.toggle('home');
@@ -40,7 +40,7 @@ class App extends React.Component {
         if (_mk && _user_id) return this.props.toggle('tile');
 
         if (_user_id) return this.props.toggle('unlock');
-
+        chrome.runtime.sendMessage({'changeLogo': 'VaultLogoLogout.png'});
         return this.props.toggle('home');
       })
     });

@@ -14,6 +14,7 @@ class Unlock extends React.Component {
     if (userCode.value !== '') {
       chrome.runtime.sendMessage({'setMK': userCode.value});
       this.props.toggle('tile');
+      chrome.runtime.sendMessage({'changeLogo': 'VaultLogoLogin.png'});
     }
 
 }
@@ -36,7 +37,6 @@ class Unlock extends React.Component {
         </form>
       </div>
     )
-    console.log('ID', id);
   }
 }
 
