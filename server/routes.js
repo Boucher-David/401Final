@@ -54,6 +54,7 @@ app.post('/profile/signup', async (req, res, next) => {
     if (err) return res.send(res.body);
     
     [err, verify] = await to(emailVerify(newUser.email, newUser.verifyCode));
+    console.log('error:', err);
     if (err) User.findOneAndRemove({username: credentials.username});
 
     if (err) return res.send(res.body);

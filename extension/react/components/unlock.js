@@ -36,7 +36,6 @@ class Unlock extends React.Component {
         </form>
       </div>
     )
-    console.log('ID', id);
   }
 }
 
