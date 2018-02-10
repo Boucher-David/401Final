@@ -5,9 +5,7 @@ class Delete extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-      chrome.storage.sync.get('vault', r => {
-        // need to write backend method to delete all credentials.
-      });
+    chrome.runtime.sendMessage({'deleteAll': null});
 
     }
     back = (e) => {

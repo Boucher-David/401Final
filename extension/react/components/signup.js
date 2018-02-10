@@ -32,7 +32,7 @@ class Signup extends React.Component {
       credentials['username'] = this.state.username;
       let _string = JSON.stringify(credentials);
 
-      superagent.post('http://localhost:3000/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
+      superagent.post('http://vault-extension.herokuapp.com/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
       if (response.body.vault.signup) return this.props.toggle('verify');
 
       });

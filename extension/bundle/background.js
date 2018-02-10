@@ -1,8 +1,5 @@
 let MK = false;
 
-// triplesec is loaded as variable triplesec. Come back later to encode.
-// superagent is also loaded. don't send requests within the app, do it here.
-
 pingSync = () => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get('vault', result => {
@@ -49,6 +46,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         case 'saveID':
             saveSync('user_id', request['saveID']);
 
+        case 'deleteAll':
+          deleteAll();
             return; 
         default:
             return;
@@ -78,7 +77,7 @@ let verifyEncryptionAndSend = async (obj) => {
         _object.credentials = encrypted;
         _object.user_id = _id.user_id;
 
-        superagent.post('http://localhost:3000/credential/set').set('Authorization', `Basic ${btoa(JSON.stringify(_object))}`).then(response => {  
+        superagent.post('http://vault-extension.herokuapp.com/credential/set').set('Authorization', `Basic ${btoa(JSON.stringify(_object))}`).then(response => {  
 
           if (response.body.vault.saved) return saveSync('logins', response.body.vault.logins);
         });
@@ -91,7 +90,7 @@ deleteCredential = async (cred) => {
   
   _obj.user_id = _id.user_id;
 
-  superagent.delete(`http://localhost:3000/credential/delete/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
+  superagent.delete(`http://vault-extension.herokuapp.com/credential/delete/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
   if (response.body.vault.deleted) {
       saveSync('logins', response.body.vault.logins);
     }
@@ -104,9 +103,9 @@ deleteAll = async () => {
   
   _obj.user_id = _id.user_id;
 
-  superagent.delete(`http://localhost:3000/credential/reset`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
+  superagent.delete(`http://vault-extension.herokuapp.com/credential/reset`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
     if (response.body.vault.deleted) {
-      saveSync('logins', response.body.vault.logins);
+      saveSync('logins', []);
     }
   });
 }

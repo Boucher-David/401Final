@@ -5,7 +5,6 @@ import PW from './pw';
 import Logout from './logout';
 import Delete from './delete';
 
-// TODO need to create - actions for import * as actions from '../path'
 
 class Profile extends React.Component {
 

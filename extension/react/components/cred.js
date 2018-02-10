@@ -35,7 +35,7 @@ class Logins extends React.Component {
         _obj.user_id = this.state.user_id;
 
         return new Promise((resolve, reject) => {
-            superagent.get(`http://localhost:3000/credential/get/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
+            superagent.get(`http://vault-extension.herokuapp.com/credential/get/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
             if (response.body.vault.success) {
                 resolve(response.body.vault.credential);
               }

@@ -55,7 +55,6 @@ let btnClose = () => {
 }
 
 jQuery("form").on('submit', (e) => {
-    e.preventDefault();
 
     jQuery("form").each(function() {
         jQuery(this).find("input").each((a, b) =>  {
@@ -74,5 +73,5 @@ jQuery("form").on('submit', (e) => {
       });
       
       if (Object.keys(credentials).length > 0) return createPopup();     
-
+      return;
 });

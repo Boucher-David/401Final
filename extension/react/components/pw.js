@@ -24,7 +24,7 @@ class PW extends React.Component {
 
           let _string = JSON.stringify(this.state);
 
-          superagent.post('http://localhost:3000/profile/update/password').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
+          superagent.post('http://vault-extension.herokuapp.com/profile/update/password').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
             if (!res.body.update) return this.setState({'message': 'Failed to update. Check passwords.'})
             chrome.runtime.sendMessage({'setMK': false}, r => {
               chrome.storage.sync.remove('vault');
