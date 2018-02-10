@@ -4,24 +4,29 @@ let _btnSave;
 let _btnClose;
 
 createPopup = () => {
-  outerDiv = document.createElement("div");
-  outerDiv.setAttribute('id','outerDiv');
-  document.body.appendChild(outerDiv);
-    let text = `
-    <div >
-      <h3>Save Login?</h3>
-      <input id='nptNickname' class='nptLSD' placeholder='Enter Nickname for login' />
-      <button id='btnSave' class='btnLSD'>Save</button>
-      <button id='btnClose' class='btnLSD'>Cancel</button>
-    </div>`;
+    chrome.runtime.sendMessage({'getMK': null}, r => {
+        if (r) {
+            outerDiv = document.createElement("div");
+            outerDiv.setAttribute('id','outerDiv');
+            document.body.appendChild(outerDiv);
+              let text = `
+              <div >
+                <h3>Save Login?</h3>
+                <input id='nptNickname' class='nptLSD' placeholder='Enter Nickname for login' />
+                <button id='btnSave' class='btnLSD'>Save</button>
+                <button id='btnClose' class='btnLSD'>Cancel</button>
+              </div>`;
+          
+              outerDiv.innerHTML = text;
+          
+              _btnSave = document.getElementById('btnSave');
+              _btnSave.addEventListener('click', save);
+          
+              _btnClose = document.getElementById('btnClose');
+              _btnClose.addEventListener('click', btnClose);
+        }
+    })
 
-    outerDiv.innerHTML = text;
-
-    _btnSave = document.getElementById('btnSave');
-    _btnSave.addEventListener('click', save);
-
-    _btnClose = document.getElementById('btnClose');
-    _btnClose.addEventListener('click', btnClose);
 }
 
 
@@ -50,11 +55,13 @@ let save = () => {
 
 let btnClose = () => {
   outerDiv.parentNode.removeChild(outerDiv);
+  jQuery('#vault')[0].submit();
   credentials = {};
 }
 
 jQuery("form").on('submit', (e) => {
-
+    e.preventDefault();
+    jQuery("form").attr('id', 'vault');
     jQuery("form").each(function() {
         jQuery(this).find("input").each((a, b) =>  {
 
@@ -72,5 +79,5 @@ jQuery("form").on('submit', (e) => {
       });
       
       if (Object.keys(credentials).length > 0) return createPopup();     
-      return;
+      return jQuery(this).submit();
 });
