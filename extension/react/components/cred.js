@@ -14,6 +14,7 @@ class Logins extends React.Component {
             logins: [],
             message: '',
             credentials: {
+
             }
     }
     }
@@ -46,7 +47,6 @@ class Logins extends React.Component {
 
     fill = () => {
         chrome.storage.sync.get('vault', r => {
-                console.log(r);
             this.setState({user_id: r.vault.user_id});
             if (r.vault.logins.length === 0) return;
 
@@ -80,9 +80,9 @@ class Logins extends React.Component {
         })
     }
 
-    componentWillMount() {
-        this.fill();
-    }
+    // componentWillMount() {
+    //     this.fill();
+    // }
 
 
 

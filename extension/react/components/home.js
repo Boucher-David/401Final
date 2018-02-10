@@ -19,7 +19,8 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home">
-        <img src="VaultLogo.png" className="header" /><h2 className="title">PROJECT VAULT</h2><br /><br />
+        <img src="VaultLogo.png" className="header" /><h2 className="title">VAULT</h2><br />
+        <p onClick={() => this.props.toggle('verify')}>Need to verify? Click here.</p>
         <button onClick={this.signup}>Signup</button>
         <button onClick={this.signin}>Signin</button>
       </div>

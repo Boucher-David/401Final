@@ -9,11 +9,11 @@ class Signup extends React.Component {
     super(props);
 
     this.state = {
-      username: 'username',
-      email1: 'david_boucher@outlook.com',
-      email2: 'david_boucher@outlook.com',
-      password1: 'password',
-      password2: 'password',
+      username: '',
+      email1: '',
+      email2: '',
+      password1: '',
+      password2: '',
       error: null
     };
   }
@@ -32,9 +32,7 @@ class Signup extends React.Component {
       credentials['username'] = this.state.username;
       let _string = JSON.stringify(credentials);
 
-
       superagent.post('http://localhost:3000/profile/signup').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
-        console.log(response.body.vault);
       if (response.body.vault.signup) return this.props.toggle('verify');
 
       });

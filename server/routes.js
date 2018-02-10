@@ -22,27 +22,6 @@ app.use((req, res, next) => {
 
 app.use(authHeader);
 
-
-
-// remove user to test signup
-// app.use((req, res, next) => {
-//     User.findOneAndRemove({username: 'username'}).then(response => {
-//         return next();
-//     });
-// });
-
-// create user to test signin
-// app.use( async (req, res, next) => {
-//     let newUser = new User({username: 'username', password: 'password', email: 'david_boucher@outlook.com'})
-
-//     let [err, saved] = await to(newUser.save());
-//     return next();
-// });
-
-
-// (emailAddress, code) -> then or catch
-
-
 app.post('/profile/signup', async (req, res, next) => {
 
     res.body = res.body || {};
@@ -58,8 +37,9 @@ app.post('/profile/signup', async (req, res, next) => {
     });
 
     let [err, user] = await to(userHelper.findUser({username: credentials['username']}));
+ 
     [err, email] = await to(userHelper.findUser({email: credentials['email']}));
-   
+
     if (err) return res.send(res.body);
    
     [err, _hash] = await to(newUser.hashPassword(newUser['password']));
@@ -74,6 +54,7 @@ app.post('/profile/signup', async (req, res, next) => {
     if (err) return res.send(res.body);
     
     [err, verify] = await to(emailVerify(newUser.email, newUser.verifyCode));
+
     if (err) return res.send(res.body);
 
     res.body.vault.signup = true;
@@ -82,12 +63,12 @@ app.post('/profile/signup', async (req, res, next) => {
 
 app.post('/profile/signin', async (req, res, next) => {
     let credentials = req.body.vault.auth.basic;
-
     res.body = res.body || {};
     res.body.vault = res.body.vault || {};
     res.body.vault.signin = false;
 
     [err, user] = await to(userHelper.findUser({username: credentials['username']}));
+    
     if (err) return res.send(res.body.vault);
 
     [err, email] = await to(userHelper.findUser({email: credentials['email']}));
