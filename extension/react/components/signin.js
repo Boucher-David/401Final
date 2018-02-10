@@ -33,7 +33,7 @@ class Signin extends React.Component {
     let _string = JSON.stringify(credentials);
 
     superagent.post('http://vault-extension.herokuapp.com/profile/signin').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
-      console.log('signin: ',response.body.vault);
+
     if (!response.body.signin) {
         this.setState({error: true, message: 'Login Failed.'})
       } else {

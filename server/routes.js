@@ -79,7 +79,6 @@ app.post('/profile/signin', async (req, res, next) => {
 
     [err, password] = await to(userHelper.compare(credentials['password'], user.password));
 
-
     if (!password) return res.send(res.body.vault);
 
     [err, credential] = await to(credentialHelper.findCredential(user.user_id));

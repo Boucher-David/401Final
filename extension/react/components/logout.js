@@ -9,9 +9,10 @@ class Logout extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    chrome.runtime.sendMessage({'changeLogo': 'VaultLogoLogout.png'});
+    chrome.storage.sync.remove('vault');
+    chrome.runtime.sendMessage({'setMK': false});
       this.props.toggle('home');
-      chrome.storage.sync.remove('vault');
-      chrome.runtime.sendMessage({'setMK': false});
 
     }
 

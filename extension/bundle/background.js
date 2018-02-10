@@ -49,6 +49,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         case 'deleteAll':
           deleteAll();
             return; 
+
+        case 'changeLogo':
+          chrome.browserAction.setIcon({
+            path: request.changeLogo
+          });
+          return;
         default:
             return;
     }
