@@ -27,7 +27,7 @@ class Email extends React.Component {
 
       let _string = JSON.stringify(this.state);
 
-      superagent.post('http://localhost:3000/profile/update/email').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
+      superagent.post('http://vault-extension.herokuapp.com/profile/update/email').set('Authorization', `Basic ${btoa(_string)}`).then(res => {
         if (!res.body.update) return this.setState({'message': 'Failed to update. Check your old email.'})
         return this.setState({'message': `Success. Your new email is ${this.state.newEmail}`});
       });

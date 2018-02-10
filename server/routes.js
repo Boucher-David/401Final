@@ -29,7 +29,7 @@ app.post('/profile/signup', async (req, res, next) => {
     res.body.vault.signup = false;
 
     let credentials = req.body.vault.auth.basic; 
-    // username, email, password
+
     const newUser = new User({
         username: credentials.username,
         email: credentials.email,
@@ -54,6 +54,7 @@ app.post('/profile/signup', async (req, res, next) => {
     if (err) return res.send(res.body);
     
     [err, verify] = await to(emailVerify(newUser.email, newUser.verifyCode));
+    if (err) User.findOneAndRemove({username: credentials.username});
 
     if (err) return res.send(res.body);
 
@@ -300,6 +301,7 @@ app.delete('/credential/reset' , async (req, res, next) => {
 
     res.body.vault.deleted = true;
     res.body.vault.logins = [];
+
     return res.send(res.body);
 
 });

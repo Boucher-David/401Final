@@ -9,9 +9,9 @@ class Signin extends React.Component {
     super(props);
 
     this.state = {
-      username: 'username',
-      email: 'david_boucher@outlook.com',
-      password: 'password',
+      username: '',
+      email: '',
+      password: '',
       error: null,
       message: ''
     };
@@ -32,7 +32,7 @@ class Signin extends React.Component {
     credentials['username'] = this.state.username;
     let _string = JSON.stringify(credentials);
 
-    superagent.post('http://localhost:3000/profile/signin').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
+    superagent.post('http://vault-extension.herokuapp.com/profile/signin').set('Authorization', `Basic ${btoa(_string)}`).then(response => {
 
     if (!response.body.signin) {
         this.setState({error: true, message: 'Login Failed.'})

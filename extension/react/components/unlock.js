@@ -16,8 +16,6 @@ class Unlock extends React.Component {
       this.props.toggle('tile');
     }
 
-    //When Master Key is given, encrypt and save it in Local Storage. This will not be kept after browser closes.
-
 }
 
   gotoProfile = (e) => {
