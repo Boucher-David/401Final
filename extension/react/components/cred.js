@@ -13,10 +13,8 @@ class Logins extends React.Component {
         this.state = {
             logins: [],
             message: '',
-            credentials: {
-
-            }
-    }
+            credentials: {}
+        }
     }
 
     decryptPassword = (text, key) => {
@@ -80,9 +78,9 @@ class Logins extends React.Component {
         })
     }
 
-    // componentWillMount() {
-    //     this.fill();
-    // }
+    componentWillMount() {
+        this.fill();
+    }
 
 
 
@@ -110,7 +108,7 @@ class Logins extends React.Component {
   render() {
     return(
 
-        <div className="signin">   
+        <div className="signup">   
 
             {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent remove={this.remove} get={this.get} delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
             <button className='btnVault' onClick={this.back}>Back</button>

@@ -11,7 +11,7 @@ let defaultState = {
     pw: false,
     logout: false,
     delete: false,
-    cred: false,
+    cred: true,
     about: false
 
     }
