@@ -11,9 +11,15 @@ class Logins extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            logins: [],
+            logins: ['amazon', 'facebook'],
             message: '',
             credentials: {
+                amazon: {
+                    username: 'username'
+                },
+                facebook: {
+                    username: 'username'
+                }
             }
     }
     }
@@ -110,7 +116,7 @@ class Logins extends React.Component {
   render() {
     return(
 
-        <div className="signin">   
+        <div className="signup">   
 
             {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent remove={this.remove} get={this.get} delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
             <button className='btnVault' onClick={this.back}>Back</button>

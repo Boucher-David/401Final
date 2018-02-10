@@ -23,7 +23,7 @@ module.exports = {
         http = app.listen(process.env.PORT || 3000, () => {
           console.log(`Server running on PORT: ${process.env.PORT || 3000}`);
           isRunning = true;
-          mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/vault_dev',);   
+          mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/vault_dev');   
         });
       },
   
