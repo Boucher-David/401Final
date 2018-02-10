@@ -46,13 +46,18 @@ class PW extends React.Component {
   
       this.setState({[name]:value});
     }
-  
+    
+    goBack = (e) => {
+      e.preventDefault();
+      this.props.toggle('profile');
+    }
 
   render() {
 
     return (
 
-      <div>
+      <div className="signin">
+      <h2>CHANGE PASSWORD</h2>
         
         <form onSubmit={this.handleSubmit}>
           <label>
@@ -81,7 +86,7 @@ class PW extends React.Component {
           <input
               type='text'
               name='newPassword1'
-              placeholder='Enter old password again'
+              placeholder='Enter new password again'
               require='true'
               value={this.state.password2}
               onChange={this.handleChange}
@@ -89,6 +94,7 @@ class PW extends React.Component {
                   
           </label>
           <button className="btnVault" type="submit">Save</button>
+          <button className="btnVault" onClick={this.goBack}>Back</button>
           
         </form>
         <p>{this.state.message}</p>

@@ -20,7 +20,10 @@ class Profile extends React.Component {
     this.props.toggle(e.target.id);
 
   }
-
+  goBack = (e) => {
+    e.preventDefault();
+    this.props.toggle('tile');
+  }
 
   render() {
 
@@ -31,6 +34,7 @@ class Profile extends React.Component {
         <button className="container" onClick={this.setComponent} id="password">Change Password</button>
         <button className="container" onClick={this.setComponent} id="logout">Logout</button>
         <button className="container" onClick={this.setComponent} id="delete">Delete</button>
+        <button className="btnVault" onClick={this.goBack}>Back</button>
       </div>
 
     )

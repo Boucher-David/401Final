@@ -23,6 +23,11 @@ class Signin extends React.Component {
     this.setState({[name]:value});
   }
 
+  goBack = (e) => {
+    e.preventDefault();
+    this.props.toggle('home');
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -88,7 +93,7 @@ class Signin extends React.Component {
 
 
     return (
-      <div>
+      <div className="signin">
         <form onSubmit={this.handleSubmit}>
           <h2 className="heading">Welcome Back!</h2>
 
@@ -97,6 +102,7 @@ class Signin extends React.Component {
           {email}
 
           <button className="btnVault" type='submit'>Login</button>
+          <button className="btnVault" onClick={this.goBack}>Back</button>
         </form>
 
 

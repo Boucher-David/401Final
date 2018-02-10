@@ -127,6 +127,7 @@ class Signup extends React.Component {
           <br />
 
           <button className="btnVault" type="submit">Create Account</button>
+          <button className="btnVault" onClick={this.goBack}>Back</button>
 
         </form>
       </div>

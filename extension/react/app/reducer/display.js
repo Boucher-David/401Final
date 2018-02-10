@@ -2,7 +2,7 @@ let defaultState = {
 
     signup: false,
     home: false,
-    profile: true,
+    profile: false,
     tile: false,
     signin: false,
     verify: false,
@@ -12,6 +12,7 @@ let defaultState = {
     logout: false,
     delete: false,
     cred: false,
+    pwGenerator: true,
     about: false
     
     }
@@ -34,7 +35,7 @@ let defaultState = {
             return newState;
             break;
             default:
-                return state;
+            return state;
         }
     
     

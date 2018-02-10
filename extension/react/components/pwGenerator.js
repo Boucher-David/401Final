@@ -1,12 +1,22 @@
 import React from 'react';
 
-class PWGenerator extends React.Component {
+class Generator extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
+    back = (e) => {
+        e.preventDefault();
+        this.props.toggle('tile');
+    }
     render() {
+
+
 
         return (
             <div>
                 <h2>PW Generator</h2>
+                <button className="btnVault" onClick={this.back}>Back</button>
             </div>
         )
 
@@ -14,4 +24,4 @@ class PWGenerator extends React.Component {
 
 }
 
-export default PWGenerator;
+export default Generator;
