@@ -3,7 +3,7 @@ let defaultState = {
     signup: false,
     home: false,
     profile: false,
-    tile: true,
+    tile: false,
     signin: false,
     verify: false,
     unlock: false,
@@ -11,7 +11,7 @@ let defaultState = {
     pw: false,
     logout: false,
     delete: false,
-    cred: false,
+    cred: true,
     about: false
 
     }
