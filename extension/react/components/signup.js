@@ -101,7 +101,7 @@ class Signup extends React.Component {
 
 
     return (
-      <div>
+      <div className="signup">
 
         <form onSubmit={this.handleSubmit}>
           <h2 className="heading">SIGN UP NOW!</h2>

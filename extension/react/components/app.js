@@ -35,19 +35,19 @@ class App extends React.Component {
       if (response.vault.user_id) _user_id = true;
       chrome.runtime.sendMessage({'getMK': null}, (response) => {
         _mk = response;
-  
+
         if (_mk && _user_id) return this.props.toggle('tile');
 
         if (_user_id) return this.props.toggle('unlock');
 
         return this.props.toggle('home');
-      })  
+      })
     });
   }
 
-  componentWillMount() {
-    this._find();
-  }
+  // componentWillMount() {
+  //   this._find();
+  // }
 
 
 
@@ -84,5 +84,3 @@ const mapDispatchToProps = (dispatch, getState) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-
