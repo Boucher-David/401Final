@@ -70,21 +70,20 @@ app.post('/profile/signin', async (req, res, next) => {
     res.body.vault.signin = false;
 
     [err, user] = await to(userHelper.findUser({username: credentials['username']}));
-    console.log('find user: ', err);
-    
+
     if (err) return res.send(res.body.vault);
 
     [err, email] = await to(userHelper.findUser({email: credentials['email']}));
-    console.log('find email: ', err);
+
     if (err) return res.send(res.body.vault);
 
     [err, password] = await to(userHelper.compare(credentials['password'], user.password));
 
-    console.log('find pw: ', err);
+
     if (!password) return res.send(res.body.vault);
 
     [err, credential] = await to(credentialHelper.findCredential(user.user_id));
-    console.log('find credential: ', err);
+
     if (err) return res.send(res.body.vault);
 
     res.body.vault = {

@@ -89,6 +89,7 @@ class Logins extends React.Component {
         this.setState({
             logins: this.state.logins.filter((_, i) => _ !== cred)
         });
+        this.setState({message: ''})
     }
 
     generateKey = (d='123') => {
