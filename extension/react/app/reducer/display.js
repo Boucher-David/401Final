@@ -1,12 +1,12 @@
 let defaultState = {
 
-    signup: true,
+    signup: false,
     home: false,
     profile: false,
     tile: false,
     signin: false,
     verify: false,
-    unlock: false,
+    unlock: true,
     email: false,
     pw: false,
     logout: false,

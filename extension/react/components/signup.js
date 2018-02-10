@@ -41,6 +41,10 @@ class Signup extends React.Component {
     }
 
   }
+  back = (e) => {
+    e.preventDefault();
+    this.props.toggle("home");
+  }
   render() {
 
     let email1 =
@@ -126,7 +130,8 @@ class Signup extends React.Component {
 
           <br />
 
-          <button className="btnVault" type="submit">Create Account</button>
+          <button onClick={this.back}>Back </button>
+          <button type="submit">Create</button>
 
         </form>
       </div>

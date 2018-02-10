@@ -30,16 +30,22 @@ class Verify extends React.Component {
     this.setState({code: event.target.value});
   }
 
+  back = (e) => {
+    e.preventDefault();
+    this.props.toggle("home");
+  }
   render() {
     return (
-      <div>
+      <div className="verify">
         <h2 className="heading">Verify Activity</h2>
         <p>We sent you a code to your email. Paste it below:</p>
         <input id='user-code' type="text" onChange={this.captureCode}/>
         <br />
         <br />
-        <button className="btnVault" onClick={this.submitCode}>Submit</button>
+        <button onClick={this.submitCode}>Submit</button>
+        <button onClick={this.back}>Back</button>
         {(this.state.error) ? <p>{this.state.message}</p> : null}
+
       </div>
     )
   }
