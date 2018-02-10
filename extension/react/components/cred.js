@@ -46,7 +46,7 @@ class Logins extends React.Component {
 
     fill = () => {
         chrome.storage.sync.get('vault', r => {
-            
+                console.log(r);
             this.setState({user_id: r.vault.user_id});
             if (r.vault.logins.length === 0) return;
 
@@ -59,32 +59,32 @@ class Logins extends React.Component {
             });
 
             this.setState(_state);
-
-
-
-            this.state.logins.map(login => {
-                chrome.runtime.sendMessage({'getCredential': null}, _p => {
-                    this.getCredential(login, ).then(_l => {
-                        this.decryptPassword(_l, _p).then(_x => {
-                            Object.keys(JSON.parse(_x)).forEach(_u => {
-                                _state.credentials[login][_u] = JSON.parse(_x)[_u];
-                            })
-
-                            this.setState(_state);
-                            this.setState({message: ''});
-                        }).catch(err => {
-                            this.setState({message: err});
-                        });
-                    });
-                })
-
-            });
         });
+    }
+
+    get = (cred) => {
+        this.setState({message: 'Credentials Are Loading'});
+        let _state = {...this.state};
+
+        chrome.runtime.sendMessage({'getCredential': null}, _p => {
+            this.getCredential(cred).then(_l => {
+                this.decryptPassword(_l, _p).then(_x => {
+
+                    Object.keys(JSON.parse(_x)).forEach(_u => {
+                        _state.credentials[cred][_u] = JSON.parse(_x)[_u];
+                    });
+                    this.setState({_state});
+                    this.setState({message: `${cred} has loaded. Click again.`});
+                });
+            });
+        })
     }
 
     componentWillMount() {
         this.fill();
     }
+
+
 
     deleteCred = (cred) => {
         chrome.runtime.sendMessage({'deleteCredential': cred});
@@ -100,12 +100,19 @@ class Logins extends React.Component {
     back = () => {
         this.props.toggle('tile');
     }
+
+    remove = (cred) => {
+        let _state = {...this.state};
+        _state.credentials[cred] = {};
+        _state.message = '';
+        this.setState(_state);
+    }
   render() {
     return(
 
         <div>   
             
-            {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
+            {(Object.keys(this.state.credentials).length > 0) ?  this.state.logins.map((login, i) => <CollapseComponent remove={this.remove} get={this.get} delete={this.deleteCred} key={this.generateKey(login)} trigger={login} login={this.state.credentials}/>) : null }
             <button className='btnVault' onClick={this.back}>Back</button>
             <div>{this.state.message}</div>
          </div>

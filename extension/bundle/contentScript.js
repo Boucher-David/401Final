@@ -32,6 +32,7 @@ saveCredentials = (nickname) => {
         nickname: nickname, // grab actual nickname from popup
         credentials: JSON.stringify(credentials)
     };
+
     chrome.runtime.sendMessage({'saveCredential': _save});
 
 }
@@ -42,8 +43,8 @@ let nptNickname = () => {
 
 let save = () => {
     let _nickname = nptNickname();
-    if (_nickname === '') return;
 
+    if (_nickname === '') return;
     saveCredentials(_nickname);
     btnClose();
 }

@@ -7,7 +7,8 @@ class CollapseComponent extends React.Component {
     }
 
     _fetch = () => {
-        this.props.fetch(this.props);
+        if (Object.keys(this.props.login[this.props.trigger]).length > 0) return ;
+        this.props.get(this.props.trigger);
     }
 
     generateKey = (d='123') => {
@@ -27,11 +28,17 @@ class CollapseComponent extends React.Component {
         document.execCommand('copy');
         body.removeChild(copyFrom);
     }
+    
+    remove = () => {
+        this.props.remove(this.props.trigger);
+    }
 
     render() {
+
+
         return (
 
-            <Collapsible onClick={this._fetch} key={this.generateKey('collapsable')} trigger={this.props.trigger} >
+            <Collapsible onClose={this.remove} onOpening={this._fetch}  key={this.generateKey('collapsible')} trigger={this.props.trigger} >
 
 
                 {Object.keys(this.props.login[this.props.trigger]).map((cred, i) => {

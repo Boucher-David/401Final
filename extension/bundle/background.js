@@ -72,7 +72,6 @@ return new Promise((resolve, reject) => {
 let verifyEncryptionAndSend = async (obj) => {
   let _id = await pingSync();
     let _object = obj;
-
       if(MK && _id.user_id) {
         let encrypted = await encryptPassword(obj.credentials);
 
@@ -80,6 +79,7 @@ let verifyEncryptionAndSend = async (obj) => {
         _object.user_id = _id.user_id;
 
         superagent.post('http://localhost:3000/credential/set').set('Authorization', `Basic ${btoa(JSON.stringify(_object))}`).then(response => {  
+
           if (response.body.vault.saved) return saveSync('logins', response.body.vault.logins);
         });
       }
@@ -93,7 +93,6 @@ deleteCredential = async (cred) => {
 
   superagent.delete(`http://localhost:3000/credential/delete/${cred}`).set('Authorization', `Basic ${btoa(JSON.stringify(_obj))}`).then(response => {
   if (response.body.vault.deleted) {
-    console.log(response.body.vault);
       saveSync('logins', response.body.vault.logins);
     }
   })
