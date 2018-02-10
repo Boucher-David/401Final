@@ -10,15 +10,21 @@ class Delete extends React.Component {
       });
 
     }
+    back = (e) => {
+      e.preventDefault();
+      this.props.toggle("tile");
+    }
 
   render() {
     return (
-      <form >
+      <form className="signup">
           <label>
-            <h2>Delete</h2>      
+            <h2 className="heading">Delete</h2>
+            <p>Delete all stored credentials from your account</p>
           </label>
-          <button className="btnVault" onClick={this.handleSubmit}>Delete</button>
-          
+          <button onClick={this.handleSubmit}>Delete</button>
+          <button onClick={this.back}>Back</button>
+
         </form>
     );
   }

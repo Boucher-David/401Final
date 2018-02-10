@@ -14,6 +14,7 @@ import Logout from './logout';
 import Delete from './delete';
 import Cred from './cred';
 import About from './about';
+import Generator from './pwGenerator';
 
 import { toggle } from '../app/actions/displayActions';
 
@@ -69,7 +70,7 @@ class App extends React.Component {
         {(this.props.display.cred) ? <Cred toggle={this.props.toggle}/> : null}
         {(this.props.display.about) ? <About toggle={this.props.toggle}/> : null}
         {(this.props.display.profile) ? <Profile toggle={this.props.toggle}/> : null}
-        {(this.props.display.generator) ? <Generator toggle={this.props.toggle}/> : null}
+        {(this.props.display.pwGenerator) ? <Generator toggle={this.props.toggle}/> : null}
       </div>
     )
   }
